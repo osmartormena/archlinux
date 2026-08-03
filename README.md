@@ -32,11 +32,14 @@ cat << EOF > /etc/repart.d/01-disk.conf
 [Partition]
 Type=root
 Label=ROOT
-Format=ext4
-MountPoint=/
+Format=btrfs
+Subvolumes=/@ /@home
+DefaultSubvolume=/@
+MountPoint=/:subvol=@
+MountPoint=/home:subvol=@home
 EOF
 
-systemd-repart --dry-run=no --empty=force --seed=$MAC_ID --generate-fstab=/tmp /dev/sda
+systemd-repart --dry-run=no --empty=force --seed=$MAC_ID --offline=yes --generate-fstab=/tmp /dev/sda
 
 mount 
 mount --mkdir 
