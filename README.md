@@ -25,6 +25,24 @@ mkfs.fat -F 32 /dev/sda1
 mkfs.btrfs -f /dev/sda2
 ```
 Monte e crie os subvolumes:
+```
+mount /dev/sda2 /mnt
+
+btrfs subvolume create /mnt/@
+btrfs subvolume create /mnt/@home
+btrfs subvolume create /mnt/@snapshots
+
+umount /mnt
+
+mount -o noatime,compress=zstd,discard=async,subvol=@ /dev/sda2 /mnt
+mkdir -p /mnt/{home,.snapshots}
+mount -o noatime,compress=zstd,discard=async,subvol=@home /dev/sda2 /mnt/home
+mount -o noatime,compress=zstd,discard=async,subvol=@snapshots /dev/sda2 /mnt/.snapshots
+
+
+
+mount --mkdir /dev/sda1 /mnt/boot
+```
 
 ## Installation
 btrfs-progs dosfstools
