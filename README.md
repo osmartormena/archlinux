@@ -35,13 +35,14 @@ btrfs subvolume create /mnt/@snapshots
 umount /mnt
 
 mount -o noatime,compress=zstd,discard=async,subvol=@ /dev/sda2 /mnt
-mkdir -p /mnt/{home,.snapshots}
+mkdir /mnt/{home,.snapshots}
 mount -o noatime,compress=zstd,discard=async,subvol=@home /dev/sda2 /mnt/home
 mount -o noatime,compress=zstd,discard=async,subvol=@snapshots /dev/sda2 /mnt/.snapshots
 
-
-
 mount --mkdir /dev/sda1 /mnt/boot
+
+lsblk /dev/sda
+btrfs subvolume list /mnt
 ```
 
 ## Installation
