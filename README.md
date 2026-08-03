@@ -86,6 +86,7 @@ mkinitcpio -P
 
 passwd
 
+bootctl install
 ```
 Exiting the chroot environment:
 ```
