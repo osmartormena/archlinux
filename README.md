@@ -17,6 +17,17 @@ Set the machine ID, partitions, and file systems:
 ```
 mkdir -p /tmp/target/etc/repart.d
 cat << EOF > /tmp/target/etc/repart.d/00-disk.conf
+[Partition]
+Type=esp
+Label=ESP
+SizeMinBytes=512M
+SizeMaxBytes=1G
+Format=vfat
+
+[Partition]
+Type=root
+Label=ROOT
+Format=btrfs
 EOF
 
 MAC_ID=$(systemd-id128 new)
