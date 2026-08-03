@@ -15,23 +15,28 @@ Ensure time synchronization is set:
 ## Set up the partitions
 Set the machine ID, partitions, and file systems:
 ```
-mkdir -p /tmp/target/etc/repart.d
-cat << EOF > /tmp/target/etc/repart.d/00-disk.conf
+MAC_ID=$(systemd-id128 new)
+echo $MAC_ID > /tmp/machine_id
+
+cat << EOF > /etc/repart.d/00-disk.conf
 [Partition]
 Type=esp
 Label=ESP
-SizeMinBytes=512M
+SizeMinBytes=1G
 SizeMaxBytes=1G
 Format=vfat
+MountPoint=/boot
+EOF
 
+cat << EOF > /etc/repart.d/01-disk.conf
 [Partition]
 Type=root
 Label=ROOT
-Format=btrfs
+Format=ext4
+MountPoint=/
 EOF
 
-MAC_ID=$(systemd-id128 new)
-echo $MAC_ID > /tmp/machine_id
+systemd-repart - -dry-run=no - -empty=force - -seed=$MAC_ID /dev/sda
 ```
 
 ### chroot
