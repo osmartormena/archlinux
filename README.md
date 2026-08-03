@@ -22,5 +22,9 @@ Set the partitions:
 Create the filesystems:
 ```
 mkfs.fat -F 32 /dev/sda1
-
+mkfs.btrfs -f /dev/sda2
 ```
+Monte e crie os subvolumes:
+
+## Installation
+btrfs-progs dosfstools
