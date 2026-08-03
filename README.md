@@ -8,6 +8,8 @@ loadkeys us-acentos
 setfont ter-132b
 ```
 
+Connect to a wireless network via `iwctl`.
+
 Ensure time synchronization is set:
 
 `timedatectl`
