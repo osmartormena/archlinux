@@ -36,8 +36,11 @@ Format=ext4
 MountPoint=/
 EOF
 
-systemd-repart - -dry-run=no - -empty=force - -seed=$MAC_ID /dev/sda
-```
+systemd-repart --dry-run=no --empty=force --seed=$MAC_ID --generate-fstab=/tmp /dev/sda
 
-### chroot
-`cp /tmp/machine_id /etc/machine_id`
+mount --mkdir
+mount
+
+cp /tmp/fstab /mnt/etc/fstab
+cp /tmp/machine_id /mnt/etc/machine_id
+```
