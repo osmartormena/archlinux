@@ -56,3 +56,26 @@ Now, let’s install a (very) minimal system:
 
 ## Configuration
 Setting up the system for first boot:
+
+`genfstab -U /mnt >> /mnt/etc/fstab`
+
+Entering the chroot environment:
+
+`arch-chroot -S /mnt`
+
+Adjust time, locale,
+```
+ln -sf /usr/share/zoneinfo/Area/Location /etc/localtime
+hwclock --systohc
+
+
+locale-gen
+```
+Exiting the chroot environment:
+```
+exit
+umount -R /mnt
+reboot
+```
+
+# Post install adjustments
