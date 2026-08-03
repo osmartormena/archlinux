@@ -63,13 +63,29 @@ Entering the chroot environment:
 
 `arch-chroot -S /mnt`
 
-Adjust time, locale,
+Adjust time, locale, console, hostname, initramfs, root password, and bootloader:
 ```
 ln -sf /usr/share/zoneinfo/Area/Location /etc/localtime
 hwclock --systohc
 
-
 locale-gen
+cat << EOF > /etc/locale.conf
+LANG=pt_BR.UTF-8
+EOF
+
+cat << EOF > /etc/vconsole.conf
+KEYMAP=us-acentos
+FONT=ter-132b
+EOF
+
+cat << EOF > /etc/hostname
+archlinux
+EOF
+
+mkinitcpio -P
+
+passwd
+
 ```
 Exiting the chroot environment:
 ```
