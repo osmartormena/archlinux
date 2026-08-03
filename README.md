@@ -52,4 +52,4 @@ Let’s sort our mirrors:
 
 Now, let’s install a (very) minimal system:
 
-`btrfs-progs dosfstools`
+`pacstrap -K /mnt base linux intel-ucode linux-firmware-broadcom linux-firmware-intel btrfs-progs dosfstools iwd systemd- neovim man-db man-pages texinfo`
