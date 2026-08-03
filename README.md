@@ -53,3 +53,6 @@ Let’s sort our mirrors:
 Now, let’s install a (very) minimal system:
 
 `pacstrap -K /mnt base linux intel-ucode linux-firmware-broadcom linux-firmware-intel btrfs-progs dosfstools iwd systemd-resolvconf wireless-regdb neovim man-db man-pages texinfo terminus-font`
+
+## Configuration
+Setting up the system for first boot:
