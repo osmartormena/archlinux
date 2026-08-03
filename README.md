@@ -46,4 +46,10 @@ btrfs subvolume list /mnt
 ```
 
 ## Installation
-btrfs-progs dosfstools
+Let’s sort our mirrors:
+
+`reflector —-latest 5 —-sort rate —-save /etc/pacman.d/mirrorlist`
+
+Now, let’s install a (very) minimal system:
+
+`btrfs-progs dosfstools`
