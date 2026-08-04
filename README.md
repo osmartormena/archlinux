@@ -45,6 +45,22 @@ systemctl start ufw
 systemctl enable ufw
 ```
 
+### Set some aliases
+```
+cat << EOF > ~/.bash_profile
+# Source ~/.bashrc if it exists
+if [ -f ~/.bashrc ]; then
+  . ~/.bashrc
+fi
+EOF
+
+cat << EOF > ~/.bashrc
+# Useful aliases
+alias ls='ls --color=always'
+alias ll='ls -l'
+alias la='ls -A'
+```
+
 ### Update pacman
 `pacman -Suy`
 
