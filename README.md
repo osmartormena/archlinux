@@ -50,6 +50,8 @@ systemctl enable ufw
 
 ### systemd configuration
 ```
+sed -i 's/^timeout 3$/timeout 0/' /boot/loader/loader.conf
+sed -i 's/relatime/noatime/g' /etc/fstab
 systemctl set-default multi-user.target
 echo 694 > /sys/class/backlight/intel_backlight/brightness
 echo 128 > /sys/class/leds/smc\:\:kbd_backlight/brightness
