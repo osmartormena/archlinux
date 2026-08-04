@@ -51,6 +51,8 @@ systemctl enable ufw
 ### systemd configuration
 ```
 systemctl set-default multi-user.target
+echo 694 > /sys/class/backlight/intel_backlight/brightness
+echo 128 > /sys/class/leds/smc\:\:kbd_backlight/brightness
 ```
 
 ###
