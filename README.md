@@ -14,85 +14,22 @@ Ensure time synchronization is set:
 
 `timedatectl`
 
-## Set up the partitions and filesystems
-Set the partitions:
-
-`cfdisk /dev/sda`
-
-Create the filesystems:
-```
-mkfs.fat -F 32 /dev/sda1
-mkfs.btrfs -f /dev/sda2
-```
-Monte e crie os subvolumes:
-```
-mount /dev/sda2 /mnt
-
-btrfs subvolume create /mnt/@
-btrfs subvolume create /mnt/@home
-btrfs subvolume create /mnt/@snapshots
-
-umount /mnt
-
-mount -o noatime,compress=zstd,discard=async,subvol=@ /dev/sda2 /mnt
-mkdir /mnt/{home,.snapshots}
-mount -o noatime,compress=zstd,discard=async,subvol=@home /dev/sda2 /mnt/home
-mount -o noatime,compress=zstd,discard=async,subvol=@snapshots /dev/sda2 /mnt/.snapshots
-
-mount --mkdir /dev/sda1 /mnt/boot
-
-lsblk /dev/sda
-btrfs subvolume list /mnt
-```
-
-## Installation
-Let’s sort our mirrors:
-
-`reflector —-latest 5 —-sort rate —-save /etc/pacman.d/mirrorlist`
-
-Now, let’s install a (very) minimal system:
-
-`pacstrap -K /mnt base linux intel-ucode linux-firmware-broadcom linux-firmware-intel btrfs-progs dosfstools iwd systemd-resolvconf wireless-regdb neovim man-db man-pages texinfo terminus-font`
-
-## Configuration
-Setting up the system for first boot:
-
-`genfstab -U /mnt >> /mnt/etc/fstab`
-
-Entering the chroot environment:
-
-`arch-chroot -S /mnt`
-
-Adjust time, locale, console, hostname, initramfs, root password, and bootloader:
-```
-ln -sf /usr/share/zoneinfo/Area/Location /etc/localtime
-hwclock --systohc
-
-locale-gen
-cat << EOF > /etc/locale.conf
-LANG=pt_BR.UTF-8
-EOF
-
-cat << EOF > /etc/vconsole.conf
-KEYMAP=us-acentos
-FONT=ter-132b
-EOF
-
-cat << EOF > /etc/hostname
-archlinux
-EOF
-
-mkinitcpio -P
-
-passwd
-
-bootctl install
-```
-Exiting the chroot environment:
-```
-exit
-umount -R /mnt
-reboot
-```
-
-# Post install adjustments
+## archinstall
+Run `archinstall` (version 4.4):
+1. Do not change archinstall language — it messes the font in HiDPI;
+2. Locales > set keyboard layout to `us-acentos`; set console font to `ter-132b`;
+3. Do not constrain your mirrors to your country only;
+4. Disk configuration > Partitioning > Use best effort default > btrfs > use subvolumes > use compression; no LVM; no disk encryption (yet); Btrfs snapshots > Snapper;
+5. Swap on zram, with zstd compression;
+6. Bootloader > systemd-boot; UKI enabled; Plymouth (yes);
+7. Kernel > Linux;
+8. Hostname > archlinux;
+9. Authentication > root password; do not set an user account yet;
+10. Profile > Xorg; graphics driver > Intel (open source);
+11. Applications > enable Bluetooth; `pipewire` audio; enable print service; enable `power-profiles-daemon`; set firewall to `uwd`; no additional fonts;
+12. Network configuration > standalone iwd;
+13. Colored pacman output;
+14. Additional packages > `btrfs-progs` and `dosfstools` (filesystems tools for this installation); `systemd-resolvconf` (for DNS); `neovim` (text editor); `man-db`, `man-pages`, and `texinfo` (documentation); `terminus-font` and `ttf-terminus-nerd` (system fonts);
+15. Set your time zone;
+16. Enable NTP;
+Install.
