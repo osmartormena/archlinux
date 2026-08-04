@@ -73,4 +73,10 @@ echo 694 > /sys/class/backlight/intel_backlight/brightness
 echo 128 > /sys/class/leds/smc\:\:kbd_backlight/brightness
 ```
 
-###
+### Create a snapshot
+Now that the system is properly configured, up, and running, let’s create a snapshot for the root partition, before we go along with more packages and configurations.
+```
+```
+
+## Set up an user account
+A
