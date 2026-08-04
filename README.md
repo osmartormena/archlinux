@@ -32,4 +32,20 @@ Run `archinstall` (version 4.4):
 14. Additional packages > `btrfs-progs` and `dosfstools` (filesystems tools for this installation); `systemd-resolvconf` (for DNS); `neovim` (text editor); `man-db`, `man-pages`, and `texinfo` (documentation); `terminus-font` and `ttf-terminus-nerd` (system fonts);
 15. Set your time zone;
 16. Enable NTP;
+
 Install.
+
+## First boot
+Let’s finish the configuration using the root account.
+
+### Network and firewall configuration
+Run `iwctl` to authenticate with your wireless network.
+```
+systemctl start ufw
+systemctl enable ufw
+```
+
+### Update pacman
+`pacman -Suy`
+
+###
