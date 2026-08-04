@@ -74,4 +74,9 @@ echo 128 > /sys/class/leds/smc\:\:kbd_backlight/brightness
 ```
 
 ## Set up an user account
-A
+Start the service, create the user, and check its status:
+```
+systemctl enable --now systemd-homed
+homectl create tormena --storage=luks
+userdbctl user tormena
+```
