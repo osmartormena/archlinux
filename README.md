@@ -80,3 +80,7 @@ systemctl enable --now systemd-homed
 homectl create tormena --storage=luks
 userdbctl user tormena
 ```
+Now let’s put some useful metadata for this user:
+```
+homectl update tormena --real-name="Osmar Tormena Júnior"
+```
