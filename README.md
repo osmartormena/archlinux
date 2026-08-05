@@ -59,7 +59,8 @@ cat << EOF > ~/.bashrc
 alias ls='ls --color=always'
 alias ll='ls -l'
 alias la='ls -A'
-aliás vim='nvim'
+alias vim='nvim'
+alias ff='fastfetch'
 ```
 
 ### Update pacman
