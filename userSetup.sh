@@ -21,9 +21,25 @@ alias ff='fastfetch'
 EOF
 
 # Get the suckless tools
-mkdir Projects/suckless
-cd Projects/suckless
+mkdir ~/Projects/suckless
+cd ~/Projects/suckless
 git clone https://git.suckless.org/dwm
 git clone https://git.suckless.org/dmenu
 git clone https://git.suckless.org/slstatus
 cd
+
+# Set up Xorg
+cat << EOF > ~/.Xresources
+Xft.dpi: 227
+EOF
+
+cat << EOF > ~/.xinitrc
+#!/bin/sh
+
+xrdb -merge ~/.Xresources
+
+slstatus &
+exec dwm
+EOF
+
+chmod +x ~/.xinitrc
