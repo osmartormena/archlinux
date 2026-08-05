@@ -26,7 +26,7 @@ Run `archinstall` (version 4.4):
 8. Hostname > archlinux;
 9. Authentication > root password; set regular user (sudoer);
 10. Profile > Xorg; graphics driver > Intel (open source);
-11. Applications > enable Bluetooth; `pipewire` audio; enable print service; enable `power-profiles-daemon`; set firewall to `uwd`; no additional fonts;
+11. Applications > enable Bluetooth; `pipewire` audio; enable print service; enable `power-profiles-daemon`; set firewall to `uwd`; no additional fonts (maybe check a firefox dependency, noto);
 12. Network configuration > standalone iwd;
 13. Colored pacman output;
 14. Additional packages > `e2fsprogs` and `dosfstools` (filesystems tools for this installation); `systemd-resolvconf` (for DNS); `wireless-regdb` (for WiFi reliability); `neovim` (text editor); `man-db`, `man-pages`, and `texinfo` (documentation); `terminus-font` and `ttf-terminus-nerd` (system fonts); `bash-completion` and `xdg-user-dirs` (convenience); `base-devel`, `gcc-fortran`, `git`, and `github-cli` (developing tools); `fastfetch` and `htop` (eye-candy); `alacritty` and `firefox` (GUI apps);
@@ -38,16 +38,22 @@ Install.
 ## First boot
 Let’s finish the configuration using the root account.
 
-### Network and firewall configuration
-Run `iwctl` to authenticate with your wireless network.
+### Network setup
+Run `iwctl` to authenticate your wireless network.
 
-## suckless.org
+### Bootstrap the system
+Run `bootstrap.sh`.
+
+## Regular user
 Log in as regular user and run
 ```
 LC_ALL=C xdg-user-dirs-update
+sudo cp /root/.bash_profile ~/.bash_profile
+sudo cp /root/.bashrc ~/.bashrc
 ```
 to populate your HOME with non-localized directory names.
 
+### Get some suckless.org tools
 Now, let’s download tools:
 ```
 mkdir Projects/suckless
@@ -58,3 +64,5 @@ git clone https://git.suckless.org/slstatus
 cd
 ```
 Compile the tools according to the instructions.
+
+### Set up our GUI
