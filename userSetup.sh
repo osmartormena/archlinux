@@ -1,6 +1,11 @@
 #!/bin/sh
 #
 
+# Change ownership of /usr/local
+sudo chown -R tormena /usr/local
+sudo chgrp -R tormena /usr/local
+mkdir /usr/local/texlive
+
 # Populate de $HOME directory, set bash_profile and bashrc
 LC_ALL=C xdg-user-dirs-update
 cat << EOF > ~/.bash_profile
