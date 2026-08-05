@@ -77,10 +77,7 @@ echo 128 > /sys/class/leds/smc\:\:kbd_backlight/brightness
 Start the service, create the user, and check its status:
 ```
 systemctl enable --now systemd-homed
-homectl create tormena --storage=luks
-userdbctl user tormena
-```
-Now let’s put some useful metadata for this user:
-```
-homectl update tormena --real-name="Osmar Tormena Júnior" --email-address="tormena@utfpr.edu.br" --location="Campo Mourão, Brasil" --birth-date=1986-03-06 --home-dir=/home/tormena --member-of=wheel --shell=/bin/bash
+homectl create tormena --real-name="Osmar Tormena Júnior" --email-address="tormena@utfpr.edu.br" --location="Campo Mourão, Brasil" --birth-date=1986-03-06 --home-dir=/home/tormena --member-of=wheel --shell=/bin/bash --storage=luks --fs-type=btrfs --luks-extra-mount-options=compress:zstd:1,noacl,user_subvol_rm_allowed
+homectl activate tormena
+homectl inspect tormena
 ```
