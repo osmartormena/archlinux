@@ -45,7 +45,7 @@ Run `iwctl` to authenticate your wireless network.
 Run `bootstrap.sh`.
 
 ## Regular user
-Run `userSetup.sh`. Compile the suckless tools according to the instructions.
+Run `userSetup.sh`. Compile the suckless tools according to the instructions. Set the font on `.../dwm/config.h` to `"Terminess Nerd Font Mono:size=10:antialias=false:autohint=false"`.
 
 `startx` should work now.
 
