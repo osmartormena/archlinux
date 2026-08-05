@@ -77,3 +77,36 @@ curl -LO https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
 mkdir install-tl
 tar -xf install-tl-unx.tar.gz -C install-tl --strip-component=1
 rm install-tl-unx.tar.gz
+
+cat > install-tl/texlive.profile << EOF
+# Custom installation profile.
+selected_scheme scheme-infraonly
+TEXDIR /usr/local/texlive/2026
+TEXMFCONFIG ~/.texlive2026/texmf-config
+TEXMFHOME ~/texmf
+TEXMFLOCAL /usr/local/texlive/texmf-local
+TEXMFSYSCONFIG /usr/local/texlive/2026/texmf-config
+TEXMFSYSVAR /usr/local/texlive/2026/texmf-var
+TEXMFVAR ~/.texlive2026/texmf-var
+binary_x86_64-linux 1
+instopt_adjustpath 1
+instopt_adjustrepo 1
+instopt_letter 0
+instopt_portable 0
+instopt_write18_restricted 1
+tlpdbopt_autobackup 0
+tlpdbopt_backupdir tlpkg/backups
+tlpdbopt_create_formats 1
+tlpdbopt_desktop_integration 0
+tlpdbopt_file_assocs 0
+tlpdbopt_generate_updmap 1
+tlpdbopt_install_docfiles 1
+tlpdbopt_install_srcfiles 0
+tlpdbopt_post_code 1
+tlpdbopt_sys_bin /usr/local/bin
+tlpdbopt_sys_info /usr/local/info
+tlpdbopt_sys_man /usr/local/man
+EOF
+
+./install-tl/install-tl -profile install-tl/texlive.profile
+rm -r install-tl
