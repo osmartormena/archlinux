@@ -66,3 +66,9 @@ exec dwm
 EOF
 
 chmod +x ~/.xinitrc
+
+# Set up TeX Live
+curl -LO https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
+mkdir install-tl
+tar -xf install-tl-unx.tar.gz -C install-tl --strip-component=1
+rm install-tl-unx.tar.gz
