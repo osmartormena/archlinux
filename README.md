@@ -77,5 +77,7 @@ echo 128 > /sys/class/leds/smc\:\:kbd_backlight/brightness
 
 ## suckless.org
 ```
-
+git clone https://git.suckless.org/dwm
+git clone https://git.suckless.org/dmenu
+git clone https://git.suckless.org/slstatus
 ```
