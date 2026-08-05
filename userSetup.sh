@@ -149,3 +149,23 @@ tlmgr install \
 		babel-latin babel-french babel-german babel-italian babel-portuges babel-spanish \
 		hyphen-english hyphen-latin hyphen-french hyphen-german hyphen-italian hyphen-portuguese hyphen-spanish \
 		tabularray-abnt
+
+cat << EOF >> /usr/local/texlive/2026/texmf.cnf
+%
+% Acrescenta pdftex, pdflatex, biber e gnuplot à lista
+shell_escape_commands = \\
+pdftex,pdflatex,\\
+gnuplot,\\
+bibtex,bibtex8,\\
+extractbb,\\
+gregorio,\\
+kpsewhich,\\
+l3sys-query,\\
+latexminted,\\
+makeindex,\\
+memoize-extract.pl,\\
+memoize-extract.py,\\
+repstopdf,\\
+r-mpost,\\
+texosquery-jre8,\\
+EOF
