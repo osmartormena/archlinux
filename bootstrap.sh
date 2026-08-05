@@ -16,7 +16,7 @@ EOF
 
 cat << EOF > ~/.bashrc
 # Usefull aliases
-alias ls='ls --color=always'
+alias ls='ls --color=always --human-readable'
 alias ll='ls -l'
 alias la='ls -A'
 alias vim='nvim'
