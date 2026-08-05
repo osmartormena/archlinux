@@ -48,3 +48,5 @@ Run `bootstrap.sh`.
 Run `userSetup.sh`. Compile the suckless tools according to the instructions.
 
 `startx` should work now.
+
+Open `firefox`. It should look HUGE! Type `about:config` in the address bar, search for `layout.css.devPixelsPerPx` and set it to `0.75`.
