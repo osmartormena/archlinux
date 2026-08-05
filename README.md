@@ -82,5 +82,5 @@ userdbctl user tormena
 ```
 Now let’s put some useful metadata for this user:
 ```
-homectl update tormena --real-name="Osmar Tormena Júnior"
+homectl update tormena --real-name="Osmar Tormena Júnior" --email-address="tormena@utfpr.edu.br" --location="Campo Mourão, Brasil" --birth-date=1986-03-06 --home-dir=/home/tormena --member-of=wheel --shell=/bin/bash
 ```
