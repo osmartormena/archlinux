@@ -117,20 +117,20 @@ cat << EOF > /usr/local/texlive/2026/texmf-config/web2c/fmtutil.cnf
 #
 # Disabling unused formats
 #
-## latex-bin:
+# from latex-bin:
 #! dvilualatex luatex language.dat,language.dat.lua dvilualatex.ini
 #! latex pdftex language.dat -translate-file=cp227.tcx *latex.ini
 #! lualatex luahbtex language.dat,language.dat.lua lualatex.ini
 pdflatex pdftex language.dat -translate-file=cp227.tcx *pdflatex.ini
 #
-## luahbtex:
+# from luahbtex:
 #! luahbtex luahbtex language.def,language.dat.lua luatex.ini
 #
-## luatex:
+# from luatex:
 #! dviluatex luatex language.def,language.dat.lua dviluatex.ini
 #! luatex luatex language.def,language.dat.lua luatex.ini
 #
-## pdftex:
+# from pdftex:
 #! etex pdftex language.def -translate-file=cp227.tcx *etex.ini
 #! pdfetex pdftex language.def -translate-file=cp227.tcx *pdfetex.ini
 pdftex pdftex language.def -translate-file=cp227.tcx *pdfetex.ini
