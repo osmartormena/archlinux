@@ -29,7 +29,7 @@ Run `archinstall` (version 4.4):
 11. Applications > enable Bluetooth; `pipewire` audio; enable print service; enable `power-profiles-daemon`; set firewall to `uwd`; no additional fonts;
 12. Network configuration > standalone iwd;
 13. Colored pacman output;
-14. Additional packages > `e2fsprogs` and `dosfstools` (filesystems tools for this installation); `systemd-resolvconf` (for DNS); `wireless-regdb` (for WiFi reliability); `neovim` (text editor); `man-db`, `man-pages`, and `texinfo` (documentation); `terminus-font` and `ttf-terminus-nerd` (system fonts); `bash-completion` (convenience); `base-devel`, `gcc-fortran`, `git`, and `github-cli` (developing tools); `fastfetch` and `htop` (eye-candy);
+14. Additional packages > `e2fsprogs` and `dosfstools` (filesystems tools for this installation); `systemd-resolvconf` (for DNS); `wireless-regdb` (for WiFi reliability); `neovim` (text editor); `man-db`, `man-pages`, and `texinfo` (documentation); `terminus-font` and `ttf-terminus-nerd` (system fonts); `bash-completion` and `xdg-user-dirs` (convenience); `base-devel`, `gcc-fortran`, `git`, and `github-cli` (developing tools); `fastfetch` and `htop` (eye-candy);
 15. Set your time zone;
 16. Enable NTP;
 
@@ -76,8 +76,22 @@ echo 128 > /sys/class/leds/smc\:\:kbd_backlight/brightness
 ```
 
 ## suckless.org
+Log in as regular user and run
 ```
+LC_ALL=C xdg-user-dirs-update
+```
+to populate your HOME with non-localized directory names.
+
+Now, let’s download and compile the tools:
+```
+mkdir Projects/suckless
+cd Projects/suckless
 git clone https://git.suckless.org/dwm
 git clone https://git.suckless.org/dmenu
 git clone https://git.suckless.org/slstatus
+cd
+```
+Install additional packages for GUI:
+```
+sudo pacman -S alacritty firefox
 ```
