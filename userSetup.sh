@@ -78,7 +78,7 @@ mkdir install-tl
 tar -xf install-tl-unx.tar.gz -C install-tl --strip-component=1
 rm install-tl-unx.tar.gz
 
-cat > install-tl/texlive.profile << EOF
+cat << EOF > install-tl/texlive.profile
 # Custom installation profile.
 selected_scheme scheme-infraonly
 TEXDIR /usr/local/texlive/2026
@@ -110,3 +110,42 @@ EOF
 
 ./install-tl/install-tl -profile install-tl/texlive.profile
 rm -r install-tl
+
+mkdir /usr/local/texlive/2026/texmf-config/web2c
+cat << EOF > /usr/local/texlive/2026/texmf-config/web2c/fmtutil.cnf
+# Substituting /usr/local/texlive/2026/texmf−dist/web2c/fmtutil.cnf
+#
+# Disabling unused formats
+#
+## latex-bin:
+#! dvilualatex luatex language.dat,language.dat.lua dvilualatex.ini
+#! latex pdftex language.dat -translate-file=cp227.tcx *latex.ini
+#! lualatex luahbtex language.dat,language.dat.lua lualatex.ini
+pdflatex pdftex language.dat -translate-file=cp227.tcx *pdflatex.ini
+#
+## luahbtex:
+#! luahbtex luahbtex language.def,language.dat.lua luatex.ini
+#
+## luatex:
+#! dviluatex luatex language.def,language.dat.lua dviluatex.ini
+#! luatex luatex language.def,language.dat.lua luatex.ini
+#
+## pdftex:
+#! etex pdftex language.def -translate-file=cp227.tcx *etex.ini
+#! pdfetex pdftex language.def -translate-file=cp227.tcx *pdfetex.ini
+pdftex pdftex language.def -translate-file=cp227.tcx *pdfetex.ini
+EOF
+
+tlmgr install \
+		amsfonts bibtex cm colorprofiles etex graphics-def hyphenex ifplatform iftex knuth-lib pdftex plain tex-ini-files texlive-common texlive-en texlive-msg-translations tlshell unicode-data \
+		amsmath babel babel-english babelbib carlisle epstopdf-pkg etoolbox fancyhdr firstaid fix2col geometry graphics hyperref l3backend l3kernel l3packages latex latex-bin latex-fonts natbib oberdiek tools url \
+		booktabs cmap everyshi listings mathtools memoir microtype pdflscape pdfpages textcase xcolor xfrac \
+		acro cancel csquotes listingsutf8 multirow pdfx standalone translations xmpincl xpatch \
+		lm \
+		latexmk synctex texdoc\
+		biber biblatex biblatex-abnt \
+		chemformula physconst siunitx \
+		circuitikz pgf pgfplots \
+		babel-latin babel-french babel-german babel-italian babel-portuges babel-spanish \
+		hyphen-english hyphen-latin hyphen-french hyphen-german hyphen-italian hyphen-portuguese hyphen-spanish \
+		tabularray-abnt
