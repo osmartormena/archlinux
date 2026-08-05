@@ -152,7 +152,7 @@ tlmgr install \
 
 cat << EOF >> /usr/local/texlive/2026/texmf.cnf
 %
-% Acrescenta pdftex, pdflatex, biber e gnuplot à lista
+% Add pdftex, pdflatex, biber, and gnuplot to the list
 shell_escape_commands = \\
 pdftex,pdflatex,\\
 gnuplot,\\
