@@ -45,24 +45,6 @@ Run `iwctl` to authenticate your wireless network.
 Run `bootstrap.sh`.
 
 ## Regular user
-Log in as regular user and run
-```
-LC_ALL=C xdg-user-dirs-update
-sudo cp /root/.bash_profile ~/.bash_profile
-sudo cp /root/.bashrc ~/.bashrc
-```
-to populate your HOME with non-localized directory names.
+Run `userSetup.sh`. Compile the suckless tools according to the instructions.
 
-### Get some suckless.org tools
-Now, let’s download tools:
-```
-mkdir Projects/suckless
-cd Projects/suckless
-git clone https://git.suckless.org/dwm
-git clone https://git.suckless.org/dmenu
-git clone https://git.suckless.org/slstatus
-cd
-```
-Compile the tools according to the instructions.
-
-### Set up our GUI
+`startx` should work now.
