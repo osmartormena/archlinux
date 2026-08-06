@@ -24,6 +24,9 @@ alias ll='ls -l'
 alias la='ls -A'
 alias vim='nvim'
 alias ff='fastfetch'
+
+# GnuPG setup
+export GPG_TTY=$(tty)
 EOF
 
 # Setup neovim
