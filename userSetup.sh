@@ -26,6 +26,34 @@ alias vim='nvim'
 alias ff='fastfetch'
 EOF
 
+# Setup neovim
+mkdir ~/.config/nvim
+cat << EOF > ~/.config/nvim/init.lua
+-- Opções de edição
+vim.opt.fileencodings	= "utf-8"	-- apenas para arquivos já existentes
+vim.opt.history				= 10			-- mantenha pequeno histórico
+vim.opt.ignorecase		= true		-- ignore capitalização na busca
+vim.opt.linebreak			= true		-- apenas querbe a linha em alguns caracteres
+vim.opt.number				= true		-- mostre os números de linha
+vim.opt.ruler					= true		-- mostre a linha e coluna sob o cursor
+vim.opt.shada					= ""			-- não guarde histórico de sessão
+vim.opt.shiftwidth		= 2				-- espaço de identação
+vim.opt.showcmd				= true		-- sugestão de completar comandos
+vim.opt.smartcase			= true		-- se a busca for maiúscula, torne-a sensível à capitalização
+vim.opt.tabstop				= 2				-- espaços do tab
+
+-- Limpeza do healthcheck()
+vim.g.loaded_python3_provider	= 0	-- desabilita suporte ao Python 3
+vim.g.loaded_ruby_provider		= 0	-- desabilita suporte ao Ruby
+vim.g.loaded_perl_provider		= 0	-- desabilita suporte ao Perl
+vim.g.loaded_node_provider		= 0	-- desabilita suporte ao Node.js
+
+-- Plugins (vim.pack)
+vim.pack.add({
+	'https://github.com/lervag/vimtex'	--	VimTeX
+})
+EOF
+
 # Get the suckless tools
 mkdir ~/Projects/suckless
 cd ~/Projects/suckless
