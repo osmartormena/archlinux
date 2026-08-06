@@ -1,6 +1,21 @@
 #!/bin/sh
 # User (not root) programs installation and setup.
 
+# Webcam (requires sudo)
+sudo pacman -Syu linux-headers
+cd ~/Projects
+git clone https://aur.archlinux.org/facetimehd-firmware.git
+cd facetimehd-firmware
+makepkg -si
+cd ..
+git clone https://aur.archlinux.org/facetimehd-dkms-git.git
+cd facetimehd-dkms-git
+makepkg -si
+cd
+sudo modprobe facetimehd
+
+# If the camera fails to initialize after a major kernel upgrade, rebuild your DKMS modules using `sudo dkms autoinstall` or reinstall the `facetimehd-dkms-git` package.
+
 # Change ownership of /usr/local
 sudo chown -R tormena /usr/local
 sudo chgrp -R tormena /usr/local
