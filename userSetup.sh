@@ -58,7 +58,7 @@ nvim --headless -c "lua vim.pack.update(nil, { force = true })" -c "qa"
 nvim --headless -c "helptags ALL" -c "q"
 
 mkdir ~/.config/nvim/ftplugin
-cat > $HOME/.config/nvim/ftplugin/tex.vim << EOF
+cat << EOF > ~/.config/nvim/ftplugin/tex.vim
 " reconheça arquivos \".tex\" como LaTeX
 let g:tex_flavor = 'latex'
 
@@ -70,6 +70,7 @@ let g:vimtex_quickfix_open_on_warning = 0
 
 " Use o Skim como o visualizados de PDF do vimtex
 let g:vimtex_view_method = 'zathura'
+EOF
 
 # Get the suckless tools
 mkdir ~/Projects/suckless
