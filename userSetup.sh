@@ -54,6 +54,11 @@ vim.pack.add({
 })
 EOF
 
+nvim --headless -c "lua vim.pack.update(nil, { force = true })" -c "qa"
+nvim --headless -c "helptags ALL" -c "q"
+
+HERE
+
 # Get the suckless tools
 mkdir ~/Projects/suckless
 cd ~/Projects/suckless
@@ -178,6 +183,8 @@ tlmgr install \
 		babel-latin babel-french babel-german babel-italian babel-portuges babel-spanish \
 		hyphen-english hyphen-latin hyphen-french hyphen-german hyphen-italian hyphen-portuguese hyphen-spanish \
 		tabularray-abnt
+tlmgr path add
+texhash
 
 cat << EOF >> /usr/local/texlive/2026/texmf.cnf
 %
