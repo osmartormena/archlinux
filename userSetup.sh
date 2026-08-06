@@ -2,7 +2,6 @@
 # User (not root) programs installation and setup.
 
 # Webcam (requires sudo)
-sudo pacman -Syu linux-headers
 cd ~/Projects
 git clone https://aur.archlinux.org/facetimehd-firmware.git
 cd facetimehd-firmware
