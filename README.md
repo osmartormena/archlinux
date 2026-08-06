@@ -29,7 +29,7 @@ Run `archinstall` (version 4.4):
 11. Applications > enable Bluetooth; `pipewire` audio; enable print service; enable `power-profiles-daemon`; set firewall to `uwd`; no additional fonts (maybe check a firefox dependency, noto);
 12. Network configuration > standalone iwd;
 13. Colored pacman output;
-14. Additional packages > `e2fsprogs` and `dosfstools` (filesystems tools for this installation); `systemd-resolvconf` (for DNS); `wireless-regdb` (for WiFi reliability); `neovim`, `ripgrep`, and `xclip` (text editor, and dependencies); `man-db`, `man-pages`, and `texinfo` (documentation); `terminus-font` and `ttf-terminus-nerd` (system fonts); `bash-completion` and `xdg-user-dirs` (convenience); `base-devel`, `gcc-fortran`, `git`, `github-cli`, and `openssh` (developing tools); `fastfetch` and `htop` (eye-candy); `alacritty` and `firefox` (GUI apps); `gnuplot` and `zathura-pdf-mupdf` (for TeXLive);
+14. Additional packages > `e2fsprogs` and `dosfstools` (filesystems tools for this installation); `systemd-resolvconf` (for DNS); `wireless-regdb` (for WiFi reliability); `neovim`, `ripgrep`, and `xclip` (text editor, and dependencies); `man-db`, `man-pages`, and `texinfo` (documentation); `terminus-font` and `ttf-terminus-nerd` (system fonts); `bash-completion` and `xdg-user-dirs` (convenience); `base-devel`, `gcc-fortran`, `git`, `github-cli`, `linux-headers`, and `openssh` (developing tools); `fastfetch` and `htop` (eye-candy); `alacritty` and `firefox` (GUI apps); `gnuplot` and `zathura-pdf-mupdf` (for TeXLive);
 15. Set your time zone;
 16. Enable NTP;
 
