@@ -235,3 +235,160 @@ repstopdf,\\
 r-mpost,\\
 texosquery-jre8,\\
 EOF
+
+# Set up MATLAB
+sudo pacman -S debootstrap debian-archive-keyring xorg-xhost
+sudo mkdir -p /opt/matlab-r2026a
+sudo debootstrap \
+    --arch=amd64 \
+    --variant=minbase \
+    trixie \
+    /opt/matlab-r2026a \
+    http://deb.debian.org/debian
+sudo tee /opt/matlab-r2026a/etc/apt/sources.list >/dev/null <<'EOF'
+deb http://deb.debian.org/debian trixie main contrib non-free non-free-firmware
+deb http://deb.debian.org/debian trixie-updates main contrib non-free non-free-firmware
+deb http://security.debian.org/debian-security trixie-security main contrib non-free non-free-firmware
+EOF
+
+sudo mkdir -p /opt/matlab-r2026a/home/tormena
+sudo mkdir -p /opt/matlab-r2026a/tmp/.X11-unix
+
+sudo mount --rbind /run /opt/matlab-r2026a/run
+sudo mount --make-rslave /opt/matlab-r2026a/run
+
+sudo mount --rbind /dev /opt/matlab-r2026a/dev
+sudo mount --make-rslave /opt/matlab-r2026a/dev
+
+sudo mount --rbind /proc /opt/matlab-r2026a/proc
+sudo mount --make-rslave /opt/matlab-r2026a/proc
+
+sudo mount --rbind /sys /opt/matlab-r2026a/sys
+sudo mount --make-rslave /opt/matlab-r2026a/sys
+
+sudo mount --rbind /run /opt/matlab-r2026a/run
+sudo mount --make-rslave /opt/matlab-r2026a/run
+
+sudo mount --bind /tmp/.X11-unix \
+    /opt/matlab-r2026a/tmp/.X11-unix
+
+sudo mount --bind /home/tormena \
+    /opt/matlab-r2026a/home/tormena
+
+sudo chroot /opt/matlab-r2026a /bin/bash
+# inside the chroot
+apt install \
+    ca-certificates \
+    curl \
+    wget \
+    unzip \
+    xz-utils \
+    file \
+    sudo \
+    locales \
+    procps \
+    psmisc \
+    dbus \
+    dbus-x11
+
+export PATH=$PATH:/sbin
+groupadd -g 1000 tormena
+useradd \
+    -u 1000 \
+    -g 1000 \
+    -d /home/tormena \
+    -s /bin/bash \
+    tormena
+chown 1000:1000 /home/tormena
+
+apt install \
+    libx11-6 \
+    libx11-xcb1 \
+    libxext6 \
+    libxfixes3 \
+    libxi6 \
+    libxrender1 \
+    libxrandr2 \
+    libxinerama1 \
+    libxcursor1 \
+    libxdamage1 \
+    libxcomposite1 \
+    libxss1 \
+    libxt6 \
+    libxmu6 \
+    libxkbcommon0 \
+    libxkbcommon-x11-0 \
+    libxcb1 \
+    libxcb-glx0 \
+    libxcb-render0 \
+    libxcb-shm0 \
+    libxcb-randr0 \
+    libxcb-xinerama0 \
+    libxcb-image0 \
+    libxcb-keysyms1 \
+    libxcb-util1 \
+    libglib2.0-0 \
+    libfontconfig1 \
+    libfreetype6 \
+    libnss3 \
+    libasound2 \
+    libgtk-3-0 \
+    libgbm1 \
+    libdrm2 \
+    libgl1 \
+    libegl1 \
+    libglu1-mesa \
+    mesa-utils \
+    mesa-vulkan-drivers
+exit
+# back to host
+sudo chroot /opt/matlab-r2026a apt install x11-utils
+sudo mkdir -p /opt/matlab-r2026a/usr/local/MATLAB
+sudo chown -R 1000:1000 /opt/matlab-r2026a/usr/local/MATLAB
+wget https://www.mathworks.com/mpm/glnxa64/mpm
+chmod +x mpm
+sudo mv mpm /opt/matlab-r2026a/usr/local/bin
+sudo chroot \
+    --userspec=1000:1000 \
+    /opt/matlab-r2026a \
+    /usr/bin/env \
+        HOME=/home/tormena \
+        USER=tormena \
+        LOGNAME=tormena \
+        SHELL=/bin/bash \
+        /bin/bash --login
+# back to chroot (not as root, though)
+mpm install \
+    --release=R2026a \
+    --destination=/usr/local/MATLAB/R2026a \
+    --products=MATLAB
+/usr/local/MATLAB/R2026a/bin/matlab
+# it works!
+
+# Matlab launcher from arch
+# umount all the binds used here
+# Add the following to /ect/fstab
+# MATLAB R2026a Debian 13 chroot
+
+/dev                    /opt/matlab-r2026a/dev             none    bind    0 0
+/dev/pts                /opt/matlab-r2026a/dev/pts         none    bind    0 0
+/dev/shm                /opt/matlab-r2026a/dev/shm         none    bind    0 0
+/dev/mqueue             /opt/matlab-r2026a/dev/mqueue      none    bind    0 0
+
+/proc                   /opt/matlab-r2026a/proc            none    bind    0 0
+/sys                    /opt/matlab-r2026a/sys             none    bind    0 0
+/run                    /opt/matlab-r2026a/run             none    bind    0 0
+
+/home/tormena           /opt/matlab-r2026a/home/tormena    none    bind    0 0
+
+/tmp/.X11-unix          /opt/matlab-r2026a/tmp/.X11-unix   none    bind    0 0
+
+
+
+cat << EOF > /usr/local/bin/matlab
+#!/bin/sh
+
+exec /usr/local/matlab/bin/matlab
+EOF
+
+chmod +x /usr/local/bin/matlab
