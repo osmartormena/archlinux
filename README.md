@@ -4,7 +4,7 @@ My personal step-by-step installation of ArchLinux on my early 2015 MBP.
 ## Boot archlinux 2026-08-01 live ISO image
 Set up keyboard layout and console font:
 ```
-loadkeys us-acentos
+loadkeys br-latin1-us
 setfont ter-132b
 ```
 
@@ -17,7 +17,7 @@ Ensure time synchronization is set:
 ## archinstall
 Run `archinstall` (version 4.4):
 1. Do not change archinstall language — it messes the font in HiDPI;
-2. Locales > set keyboard layout to `us-acentos`; set console font to `ter-132b`;
+2. Locales > set keyboard layout to `br-latin1-us`; set console font to `ter-132b`;
 3. Do not constrain your mirrors to your country only;
 4. Disk configuration > Partitioning > Use best effort default > ext4 > no /home partition; no LVM; no disk encryption;
 5. Swap on zram, with zstd compression;
