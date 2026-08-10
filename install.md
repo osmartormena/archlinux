@@ -70,6 +70,145 @@ efibootmgr -b 0000 -B
 efibootmgr -b 0001 -B
 ```
 
-## Partition the disk
+## Partition the disk, create and mount the filesystems
 
-A
+I'll create an EFI System Partition (1 GB) and a Linux root partition, using `systemd-repart`.
+
+Let's create the partition definition files:
+```
+mkdir -p /tmp/repart.d
+
+cat << EOF > /tmp/repart.d/00-esp.conf
+[Partition]
+Type=esp
+Label=EFI
+SizeMinBytes=1G
+SizeMaxBytes=1G
+Format=vfat
+EOF
+
+cat << EOF > /tmp/repart.d/01-root.conf
+[Partition]
+Type=root
+Label=Arch Linux
+Format=btrfs
+Subvolumes=/@ /@home
+DefaultSubvolume=/@
+GrowFileSystem=yes
+EOF
+```
+
+Before commiting to disk, check the partition layout with:
+```
+systemd-repart --dry-run --definitions=/tmp/repart.d /dev/sda
+```
+
+If everything checks out, then run:
+```
+systemd-repart --definitions=/tmp/repart.d /dev/sda
+```
+
+### Quick check of partition and subvolumes
+
+Run and check the output:
+```
+lsblk -f /dev/sda
+blkid /dev/sda1 /dev/sda2
+
+mount -o subvolid=5 /dev/sda2 /mnt
+btrfs subvolume list /mnt -t
+umount /mnt
+```
+
+### Mount for Arch installation
+
+Now, let's mount the filesystems for the installation
+```
+mount -o subvol=@,noatime /dev/sda2 /mnt
+
+mkdir -p /mnt/home
+mount -o subvol=@home,noatime /dev/sda2 /mnt/home
+
+mkdir -p /mnt/boot
+mount -o noatime /dev/sda1 /mnt/boot
+```
+
+And, again, a quick check by running `findmnt /mnt`.
+
+### Set up Snapper
+
+Simply run:
+```
+snapper -c root create-config /
+```
+
+## Installing the (bare-bones) system
+
+We obviously need a kernel (`linux`), some firmware (`linux-firmware`), and the base system (`base`). But, we also absolutelly need `iwd`, `systemd-resolvconf`, and `wireless-regdb` for wireless networking. We should also install: CPU microcode (`intel-ucode`); filesystem utilities (`dosfstools` and `btrfs-progs`); a text editor (`neovim`); local documentation (`man-db`, `man-pages`, and `texinfo`); and system fonts (`terminus-font`). Last, but not least, `bash-completion` for convenience.
+```
+pacstrap -K /mnt base linux linux-firmware iwd systemd-resolvconf wireless-regdb intel-ucode dosfstools btrfs-progs neovim man-db man-pages texinfo bash-completion
+```
+
+## Configuring the system
+
+To get the filesystems mounted at startup, they need to be listed in `/etc/fstab`:
+```
+genfstab -U /mnt >> /mnt/etc/fstab
+```
+
+It is of the utmost importance to get it right. Execute `cat /mnt/etc/fstab` and check (carefully) its contents. It should look like
+```
+UUID=xxxx-xxxx  /      btrfs  subvol=@,noatime      0 0
+UUID=xxxxxxxx   /home  btrfs  subvol=@home,noatime 0 0
+UUID=xxxxxxxx   /boot  vfat   ...                  0 2
+```
+
+## Still configuring, now in chroot environment
+
+Let's run:
+```
+arch-chroot /mnt
+```
+From now on, we are working inside the new installation.
+
+### Time
+
+```
+ln -sf /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime
+hwclock --systohc
+```
+
+### Locale
+
+For the POSIX C locale, there's no need to run `locale-gen`. Just run:
+```
+echo 'LANG=C.UTF-8' > /etc/locale.conf
+```
+
+Also, ensure that `/etc/vconsole.conf` contains (edit with `nvim` if necessary):
+```
+KEYMAP=br-latin1-us
+FONT=ter-132b
+```
+
+### Network
+
+```
+echo 'tormenaArch' > /etc/hostname
+```
+
+### Initramfs
+
+Because we changed the system font, we need to recreate the _initramfs_:
+```
+mkinitcpio -P
+```
+
+### Root password
+
+Now we set a password for the _root user_:
+```
+paswd
+```
+
+### Bootloader
