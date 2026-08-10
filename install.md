@@ -197,11 +197,49 @@ FONT=ter-132b
 echo 'tormenaArch' > /etc/hostname
 ```
 
+### Bootloader
+
+To install `systemd-boot` as the bootloader, run:
+```
+bootctl install
+```
+It should install to the _ESP_ partition (`/dev/sda1`) mounted on `/boot`.
+
+Now we create some configuration and entry files:
+```
+mkdir -p /boot/loader/entries
+cat << EOF > /boot/loader/loader.conf
+default arch
+timeout 0
+editor no
+EOF
+
+
+cat << EOF > /boot/loader/entries/arch.conf
+title   Arch Linux
+linux   /vmlinuz-linux
+initrd  /intel-ucode.img
+initrd  /initramfs-linux.img
+options root=UUID=<BTRFS-UUID> rootflags=subvol=@,noatime rw
+EOF
+```
+Reaplacing _<BTRFS-UUID>_ with the _UUID_ of `/dev/sda2`, which can be viewed by running `blkid /dev/sda2`.
+
 ### Initramfs
 
-Because we changed the system font, we need to recreate the _initramfs_:
+Because we changed the system font and installed the bootloader, we need to recreate the _initramfs_:
 ```
 mkinitcpio -P
+```
+
+Check `ls -lh /boot`, it should look like:
+```
+EFI/
+loader/
+intel-ucode.img
+initramfs-linux.img
+initramfs-linux-fallback.img
+vmlinuz-linux
 ```
 
 ### Root password
@@ -211,4 +249,29 @@ Now we set a password for the _root user_:
 paswd
 ```
 
-### Bootloader
+### Final sanity check
+
+Check the output of
+```
+findmnt /
+findmnt /home
+findmnt /boot
+
+bootctl status
+
+lsblk -f
+```
+
+If all checks out, then exit the chroot:
+```
+exit
+```
+Unmount the partition:
+```
+umount -R /mnt
+```
+And reboot:
+```
+reboot
+```
+Remebering to remove the installation media.
