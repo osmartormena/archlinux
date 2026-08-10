@@ -135,13 +135,6 @@ mount -o noatime /dev/sda1 /mnt/boot
 
 And, again, a quick check by running `findmnt /mnt`.
 
-### Set up Snapper
-
-Simply run:
-```
-snapper -c root create-config /
-```
-
 ## Installing the (bare-bones) system
 
 We obviously need a kernel (`linux`), some firmware (`linux-firmware`), and the base system (`base`). But, we also absolutelly need `iwd`, `systemd-resolvconf`, and `wireless-regdb` for wireless networking. We should also install: CPU microcode (`intel-ucode`); filesystem utilities (`dosfstools` and `btrfs-progs`); a text editor (`neovim`); local documentation (`man-db`, `man-pages`, and `texinfo`); and system fonts (`terminus-font`). Last, but not least, `bash-completion` for convenience.
@@ -193,9 +186,17 @@ FONT=ter-132b
 
 ### Network
 
+First we need to set the _hostname_:
 ```
 echo 'tormenaArch' > /etc/hostname
 ```
+
+Now, just so I don't need to set the wireless connectivity againg, I'll be copying the setup files over:
+```
+cp /var/lib/iwd/SSID.psk /mnt/var/lib/iwd/SSID.psk
+cp /var/lib/iwd/SSID.8021x /mnt/var/lib/iwd/SSID.8021x
+```
+Substituting _SSID_ by the actual SSID network files.
 
 ### Bootloader
 
