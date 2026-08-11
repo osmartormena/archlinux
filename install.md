@@ -209,7 +209,6 @@ It should install to the _ESP_ partition (`/dev/sda1`) mounted on `/boot`.
 
 Now we create some configuration and entry files:
 ```
-mkdir -p /boot/loader/entries
 cat << EOF > /boot/loader/loader.conf
 default arch
 timeout 0
