@@ -76,7 +76,7 @@ I'll create an EFI System Partition (1 GB) and a Linux root partition, using `sy
 
 Let's create the partition definition files:
 ```
-mkdir -p /tmp/repart.d
+mkdir /tmp/repart.d
 
 cat << EOF > /tmp/repart.d/00-esp.conf
 [Partition]
