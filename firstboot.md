@@ -2,7 +2,7 @@
 
 All commands are run as `root` within the fresh installed system. After the boot process, login as _root_ and type the _password_ defined in the last section.
 
-Because we copied the network configuration files from the live envirnment, the wireless network should just work. If not, run `iwctl` and/or refer to [install.md](install.md).
+Run `iwctl` to connect to a wireless network. Refer to [install.md](install.md).
 
 It is advisable to update the pacman database (and possibly upgrade some freshly installed package). Also, we'll enable colored output for pacman.
 ```
