@@ -12,7 +12,26 @@ mkinitcpio -P
 ```
 Optionally, reboot now to check if it worked.
 
+## Some systemd setup
+
+By default, systemd runs with a _graphical.target_. Let’s switch it to the _multi-user.target_, so _display-manager.service_ doesn’t get enabled.
+```
+systemctl set-default multi-user.target
+systemctl isolate multi-user.target
+```
+
 ## Connect to the internet and set up pacman
+
+First, let’s start the services:
+```
+systemctl enable --now iwd.service
+systemctl enable --now systemd-resolved.service
+```
+
+And set our domain region:
+```
+iw reg set BR
+```
 
 Run `iwctl` to connect to a wireless network. Refer to [install.md](install.md).
 
