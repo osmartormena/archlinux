@@ -92,6 +92,7 @@ cat << EOF > /tmp/repart.d/01-root.conf
 Type=root
 Label=Arch Linux
 Format=btrfs
+MakeDirectories=/@ /@home
 Subvolumes=/@ /@home
 DefaultSubvolume=/@
 GrowFileSystem=yes
@@ -100,12 +101,12 @@ EOF
 
 Before commiting to disk, check the partition layout with:
 ```
-systemd-repart --dry-run=yes --definitions=/tmp/repart.d /dev/sda
+systemd-repart --dry-run=yes --empty=force --offline=yes --definitions=/tmp/repart.d /dev/sda
 ```
 
 If everything checks out, then run:
 ```
-systemd-repart --dry-run=no --definitions=/tmp/repart.d /dev/sda
+systemd-repart --dry-run=no --empty=force --offline=yes --definitions=/tmp/repart.d /dev/sda
 ```
 
 ### Quick check of partition and subvolumes
