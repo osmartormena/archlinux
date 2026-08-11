@@ -193,13 +193,6 @@ First we need to set the _hostname_:
 echo 'tormenaArch' > /etc/hostname
 ```
 
-Now, just so I don't need to set the wireless connectivity againg, I'll be copying the setup files over:
-```
-cp /var/lib/iwd/SSID.psk /mnt/var/lib/iwd/SSID.psk
-cp /var/lib/iwd/SSID.8021x /mnt/var/lib/iwd/SSID.8021x
-```
-Substituting _SSID_ by the actual SSID network files.
-
 ### Bootloader
 
 To install `systemd-boot` as the bootloader, run:
