@@ -220,8 +220,6 @@ EOF
 ```
 Reaplacing _<BTRFS-UUID>_ with the _UUID_ of `/dev/sda2`, which can be viewed by running `blkid /dev/sda2`.
 
-Check if an NVRAM boot entry was created `efibootmgr -v`.
-
 ### Initramfs
 
 Because we changed the system font and installed the bootloader, we need to recreate the _initramfs_:
