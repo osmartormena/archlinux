@@ -240,7 +240,6 @@ EFI/
 loader/
 intel-ucode.img
 initramfs-linux.img
-initramfs-linux-fallback.img
 vmlinuz-linux
 ```
 
