@@ -140,7 +140,7 @@ And, again, a quick check by running `findmnt /mnt`.
 
 We obviously need a kernel (`linux`), some firmware (`linux-firmware`), and the base system (`base`). But, we also absolutelly need `iwd`, `systemd-resolvconf`, and `wireless-regdb` for wireless networking. We should also install: CPU microcode (`intel-ucode`); filesystem utilities (`dosfstools` and `btrfs-progs`); a text editor (`neovim`); local documentation (`man-db`, `man-pages`, and `texinfo`); and system fonts (`terminus-font`). Last, but not least, `bash-completion` for convenience.
 ```
-pacstrap -K /mnt base linux linux-firmware iwd systemd-resolvconf wireless-regdb intel-ucode dosfstools btrfs-progs neovim man-db man-pages texinfo bash-completion
+pacstrap -K /mnt base linux linux-firmware iwd systemd-resolvconf wireless-regdb intel-ucode dosfstools btrfs-progs neovim man-db man-pages texinfo bash-completion terminus-fonts
 ```
 
 ## Configuring the system
