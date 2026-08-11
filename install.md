@@ -215,7 +215,7 @@ title   Arch Linux
 linux   /vmlinuz-linux
 initrd  /intel-ucode.img
 initrd  /initramfs-linux.img
-options root=UUID=<BTRFS-UUID> rootflags=subvol=@,noatime rw
+options root=UUID=<BTRFS-UUID> rootflags=subvol=@,noatime,compress=zstd rw
 EOF
 ```
 Reaplacing _<BTRFS-UUID>_ with the _UUID_ of `/dev/sda2`, which can be viewed by running `blkid /dev/sda2`.
