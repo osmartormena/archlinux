@@ -128,14 +128,14 @@ Now, let's mount the filesystems for the installation
 ```
 mount -o subvol=@,noatime,compress=zstd /dev/sda2 /mnt
 
-mkdir -p /mnt/home
+mkdir /mnt/home
 mount -o subvol=@home,noatime,compress=zstd /dev/sda2 /mnt/home
 
-mkdir -p /mnt/boot
+mkdir /mnt/boot
 mount -o noatime /dev/sda1 /mnt/boot
 ```
 
-And, again, a quick check by running `findmnt /mnt`.
+And, again, a quick check by running `findmnt`.
 
 ## Installing the (bare-bones) system
 
