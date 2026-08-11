@@ -125,10 +125,10 @@ umount /mnt
 
 Now, let's mount the filesystems for the installation
 ```
-mount -o subvol=@,noatime /dev/sda2 /mnt
+mount -o subvol=@,noatime,compress=zstd /dev/sda2 /mnt
 
 mkdir -p /mnt/home
-mount -o subvol=@home,noatime /dev/sda2 /mnt/home
+mount -o subvol=@home,noatime,compress=zstd /dev/sda2 /mnt/home
 
 mkdir -p /mnt/boot
 mount -o noatime /dev/sda1 /mnt/boot
