@@ -212,13 +212,13 @@ EOF
 
 cat << EOF > /boot/loader/entries/arch.conf
 title   Arch Linux
-linux   /vmlinuz-linux
-initrd  /intel-ucode.img
-initrd  /initramfs-linux.img
-options root=UUID=<BTRFS-UUID> rootflags=subvol=@,noatime,compress=zstd rw
+linux   vmlinuz-linux
+initrd  intel-ucode.img
+initrd  initramfs-linux.img
+options root=UUID=<UUID> rootflags=subvol=@,noatime,compress=zstd rw
 EOF
 ```
-Reaplacing _<BTRFS-UUID>_ with the _UUID_ of `/dev/sda2`, which can be viewed by running `blkid /dev/sda2`.
+Reaplacing _<UUID>_ with the _UUID_ of `/dev/sda2`, which can be viewed by running `blkid /dev/sda2`.
 
 ### Initramfs
 
@@ -268,4 +268,4 @@ And reboot:
 ```
 reboot
 ```
-Remebering to remove the installation media.
+Remebering to remove the installation media. This is a long boot!
