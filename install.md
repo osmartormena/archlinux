@@ -92,6 +92,7 @@ cat << EOF > /tmp/repart.d/01-root.conf
 Type=root
 Label=Arch Linux
 Format=btrfs
+Compression=zstd
 MakeDirectories=/@ /@home
 Subvolumes=/@ /@home
 DefaultSubvolume=/@
