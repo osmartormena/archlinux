@@ -77,13 +77,13 @@ EMPTY_PRE_POST_CLEANUP="yes"
 
 Because we do not use automatic snapshots, we can disable the systemd timers. We can list them by:
 ```
-systemctl list-timers 'snapper-*'
+systemctl list-timers'
 ```
-And remove them by
+And remove them by:
 ```
-systemctl disable --now snapper-????.timer
+systemctl disable --now snapper-timeline.timer
 ```
-substituting `????` by the timer actual name. Just keep the `snapper-cleanup.timer` so the pacman snapshots are kept to a maximum of 10.
+Keep the `snapper-cleanup.timer` so the pacman snapshots are kept to a maximum of 10.
 
 Checking:
 ```
