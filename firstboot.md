@@ -22,7 +22,16 @@ systemctl isolate multi-user.target
 
 ## Connect to the internet and set up pacman
 
-First, let’s start the services:
+First, let’s configure `iwd`:
+```
+cat << EOF > /etc/iwd/main.conf
+[General]
+EnableNetworkConfiguration=true
+Country=BR
+EOF
+```
+
+Now, let’s start the services:
 ```
 systemctl enable --now iwd.service
 systemctl enable --now systemd-resolved.service
