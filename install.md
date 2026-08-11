@@ -100,12 +100,12 @@ EOF
 
 Before commiting to disk, check the partition layout with:
 ```
-systemd-repart --dry-run --definitions=/tmp/repart.d /dev/sda
+systemd-repart --dry-run=yes --definitions=/tmp/repart.d /dev/sda
 ```
 
 If everything checks out, then run:
 ```
-systemd-repart --definitions=/tmp/repart.d /dev/sda
+systemd-repart --dry-run=no --definitions=/tmp/repart.d /dev/sda
 ```
 
 ### Quick check of partition and subvolumes
