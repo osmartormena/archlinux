@@ -140,7 +140,7 @@ And, again, a quick check by running `findmnt /mnt`.
 
 We obviously need a kernel (`linux`), some firmware (`linux-firmware`), and the base system (`base`). But, we also absolutelly need `iwd`, `systemd-resolvconf`, and `wireless-regdb` for wireless networking. We should also install: CPU microcode (`intel-ucode`); filesystem utilities (`dosfstools` and `btrfs-progs`); a text editor (`neovim`); local documentation (`man-db`, `man-pages`, and `texinfo`); and system fonts (`terminus-font`). Last, but not least, `bash-completion` for convenience.
 ```
-pacstrap -K /mnt base linux linux-firmware iwd systemd-resolvconf wireless-regdb intel-ucode dosfstools btrfs-progs neovim man-db man-pages texinfo bash-completion terminus-font
+pacstrap -K /mnt base linux linux-firmware iwd systemd-resolvconf wireless-regdb intel-ucode efibootmgr dosfstools btrfs-progs neovim man-db man-pages texinfo bash-completion terminus-font
 ```
 
 ## Configuring the system
@@ -225,6 +225,8 @@ options root=UUID=<BTRFS-UUID> rootflags=subvol=@,noatime rw
 EOF
 ```
 Reaplacing _<BTRFS-UUID>_ with the _UUID_ of `/dev/sda2`, which can be viewed by running `blkid /dev/sda2`.
+
+Check if an NVRAM boot entry was created `efibootmgr -v`.
 
 ### Initramfs
 
