@@ -2,6 +2,18 @@
 
 All commands are run as `root` within the fresh installed system. After the boot process, login as _root_ and type the _password_ defined in the last section.
 
+## Solve the slow boot
+
+Because we installed the bootloader inside the _chroot_ environment, it did not create any EFI boot entries. Now, to rectify that, let's just run:
+```
+bootctl install
+efibootmgr
+mkinitcpio -P
+```
+Optionally, reboot now to check if it worked.
+
+## Connect to the internet and set up pacman
+
 Run `iwctl` to connect to a wireless network. Refer to [install.md](install.md).
 
 It is advisable to update the pacman database (and possibly upgrade some freshly installed package). Also, we'll enable colored output for pacman.
