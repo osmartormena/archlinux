@@ -4,8 +4,9 @@ All commands are run as `root` within the fresh installed system. After the boot
 
 Because we copied the network configuration files from the live envirnment, the wireless network should just work. If not, run `iwctl` and/or refer to [install.md](install.md).
 
-It is advisable to update the pacman database (and possibly upgrade some freshly installed package).
+It is advisable to update the pacman database (and possibly upgrade some freshly installed package). Also, we'll enable colored output for pacman.
 ```
+sed -i 's/^#Color$/Color/' /etc/pacman.conf
 pacman -Suy
 ```
 
@@ -68,4 +69,20 @@ Listing the snapshots:
 snapper -c root list
 ```
 
-### 
+### Systemd-ukify
+```
+pacman -S systemd-ukify
+echo 'layout=uki' > /etc/kernel/install.conf
+```
+
+Check the existence of `/etc/kernel/cmdline` and its parameters. Run:
+```
+kernel-install inspect
+ls -l /usr/lib/kernel/install.d/
+```
+If the file `91-sbctl.install` exists and is active, it should be masked. (TODO)
+
+Regenerating the kernel installation
+```
+kernel-install add-all
+```
