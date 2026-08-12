@@ -98,12 +98,12 @@ EOF
 
 Before commiting to disk, check the partition layout with:
 ```
-systemd-repart --dry-run=yes --empty=force --offline=yes --definitions=/tmp/repart.d /dev/sda
+systemd-repart --dry-run=yes --empty=force --definitions=/tmp/repart.d --offline=yes --append-fstab=replace --generate-fstab=/tmp /dev/sda
 ```
 
 If everything checks out, then run:
 ```
-systemd-repart --dry-run=no --empty=force --offline=yes --definitions=/tmp/repart.d /dev/sda
+systemd-repart --dry-run=no --empty=force --definitions=/tmp/repart.d --offline=yes --append-fstab=replace --generate-fstab=/tmp /dev/sda
 ```
 
 ### Quick check of partition and subvolumes
