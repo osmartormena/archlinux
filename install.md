@@ -15,30 +15,17 @@ These choices allow me to input accented characters and works well with my keybo
 
 ## Connect to the internet
 
-If you are on a WPA Enterprise network (most likely EAP-PEAP), you must create a file `/var/lib/iwd/SSID.8021x`, substituting `SSID` by the wireless network _SSID_. This file should contain:
+First, to unlock access to 5 GHz (and 6 GHz) bands for WiFi, the _wireless-regdb_ package is necessary (pushed to package stack). Running
 ```
-[Security]
-EAP-Method=PEAP
-EAP-Identity=username
-EAP-PEAP-Phase2-Method=MSCHAPV2
-EAP-PEAP-Phase2-Identity=username
-EAP-PEAP-Phase2-Password=password
+iw reg set BR
+```
+allows me to properly use my WiFi card with faster wireless networks.
 
-[Settings]
-AutoConnect=true
+Now, running *iwctl* gets me authenticated to a WPA-PSK wireless network. So _iwd_ is also pushed to the package stack.
 ```
-Where `username` and `password` are the actual _username_ and _password_ for the wireless network. Then run `iwctl`.
-
-If you are on a WPA-PSK network, just run `iwctl`.
-
-Inside the `iwctl` prompt:
+iwctl --passphrase=PASSPHRASE station DEVICE connect SSID
 ```
-[iwd]# station wlan0 connect SSID
-```
-If it is a WPA-PSK, it will ask the password, if it is a WPA-PEAP, it should connect directly. Either way, from the `iwctl` prompt, we just quit:
-```
-[iwd]# quit
-```
+Substituting _PASSPHRASE_, _DEVICE_, and _SSID_ accordingly.
 
 Now, we can test the network connectivity:
 ```
