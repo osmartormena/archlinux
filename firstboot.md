@@ -23,6 +23,8 @@ alias la='ls -A'
 EOF
 ```
 
+To activate the aliases, run `source ~/.bashrc`.
+
 ## Solve the slow boot
 
 Because we installed the bootloader inside the _chroot_ environment, it did not create any EFI boot entries. Now, to rectify that, let's just run:
