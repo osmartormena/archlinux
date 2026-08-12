@@ -25,7 +25,7 @@ Now, running *iwctl* gets me authenticated to a WPA-PSK wireless network. So _iw
 ```
 iwctl --passphrase=PASSPHRASE station DEVICE connect SSID
 ```
-Substituting _PASSPHRASE_, _DEVICE_, and _SSID_ accordingly.
+Substituting _PASSPHRASE_, _DEVICE_, and _SSID_ accordingly. If you need to connect to WPA Enterprise network, refer to `man iwd.network`. In the installed system, _iwd_ can provide a DHCP client, but requires configuration, refer to `man iwd.config`.
 
 Now, we can test the network connectivity:
 ```
