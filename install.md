@@ -4,11 +4,14 @@ All commands are run as `root` within the live environment.
 
 ## Setting keyboard mapping, console font, and system locale
 
-Set up keyboard layout and console font
+The man page for *loadkeys* says that the keymaps are stored in `/usr/share/kbd/keymaps`, which is owned by the _kbd_ package, which itself is a dependency of _systemd_, which is a dependency of the _base_ package. So, nothing to be done here.
+
+The *setfont* man page says that the console fonts are in `/usr/share/kbd/consolefonts`, which is owned by _kbd_ and _terminus-font_ packages. The font I’ve chosen is from _terminus-font_, so I’ll push this dependency into the package stack.
 ```
 loadkeys br-latin1-us
 setfont ter-132b
 ```
+These choices allow me to input accented characters and works well with my keyboard.
 
 ## Connect to the internet
 
