@@ -85,6 +85,7 @@ Label=EFI
 SizeMinBytes=1G
 SizeMaxBytes=1G
 Format=vfat
+MountPoint=
 EOF
 
 cat << EOF > /tmp/repart.d/01-root.conf
@@ -92,11 +93,11 @@ cat << EOF > /tmp/repart.d/01-root.conf
 Type=root
 Label=Arch Linux
 Format=btrfs
-Compression=zstd
 MakeDirectories=/@ /@home
 Subvolumes=/@ /@home
 DefaultSubvolume=/@
-GrowFileSystem=yes
+MountPoint=
+Compression=zstd
 EOF
 ```
 
