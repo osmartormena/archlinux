@@ -4,8 +4,8 @@ In this repo I'm starting with the 2026-08-01 archlinux live ISO, but it should 
 
 ## Booting the live ISO and installing the system
 
-This section pertains only to the bootable installation media. All commands are run as `root`. It is contained on [Install.md](install.md).
+This section pertains only to the bootable installation media. All commands are run as _root_. It is contained on [Install.md](install.md).
 
 ## First boot configuration and additional packages installation
 
-This section runs directly on the fresh installed (minimal) system. All commands are (also) run as `root`. It is contained in [FirstBoot.md](firstboot.md).
+This section runs directly on the fresh installed (minimal) system. All commands are (also) run as _root_. It is contained in [FirstBoot.md](firstboot.md).
