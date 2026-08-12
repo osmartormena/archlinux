@@ -34,7 +34,10 @@ ping -c 3 ping.archlinux.org
 
 ## Update the system clock
 
-Because my battery is dead, it is recommended to ensure the system clock is synchronized to prevent package signature failures. Just run `timedatectl`.
+It is recommended to ensure the system clock is synchronized to prevent package signature failures. Just run:
+```
+timedatectl
+```
 
 ## NVRAM EFI boot entries (optional)
 
