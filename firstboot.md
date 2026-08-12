@@ -2,6 +2,27 @@
 
 All commands are run as `root` within the fresh installed system. After the boot process, login as _root_ and type the _password_ defined in the last section.
 
+First, let’s get adjust the profile and rc files:
+```
+cat << EOF > ~/.bash_profile
+# /root/.bash_profile
+
+# If it exists, load /root/.bashrc
+if [ -f /root/.bashrc ]; then
+  source /root/.bashrc
+fi
+EOF
+
+cat << EOF > ~/.bashrc
+# /root/.bashrc
+
+# Some useful aliases
+alias ls='ls --color=always'
+alias ll='ls -hl'
+alias la='ls -A'
+EOF
+```
+
 ## Solve the slow boot
 
 Because we installed the bootloader inside the _chroot_ environment, it did not create any EFI boot entries. Now, to rectify that, let's just run:
