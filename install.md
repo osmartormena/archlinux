@@ -106,6 +106,8 @@ If everything checks out, then run:
 systemd-repart --dry-run=no --empty=force --definitions=/tmp/repart.d --offline=yes --append-fstab=replace --generate-fstab=/tmp /dev/sda
 ```
 
+Because we used a FAT32 and a BTRFS filesystems, we need to push _dosfstools_ and _btrfs_progs_ to our packages stack.
+
 ### Quick check of partition and subvolumes
 
 Run and check the output:
