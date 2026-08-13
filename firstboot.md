@@ -59,6 +59,10 @@ sed -i 's/^#Color$/Color/' /etc/pacman.conf
 pacman -Suy
 ```
 
+## Some more systemd setup
+Now that wireless networking should work reliably, let’s setup some more units:
+
+
 ## Set up Snapper
 
 First, let's download the packages:
