@@ -197,6 +197,15 @@ bootctl install
 ```
 It should install to the _ESP_ partition (`/dev/sda1`) mounted on `/boot`.
 
+Create the file `/etc/kernel/cmdline` with the contents `root=UUID=<UUID> rootflags=subvol=@,noatime,compress=zstd rw`. The _UUID_ from the root filesystem can be copied from `/etc/fstab`.
+
+
+
+
+
+
+
+
 Now we create some configuration and entry files:
 ```
 cat << EOF > /boot/loader/loader.conf
