@@ -142,17 +142,17 @@ pacstrap -K /mnt base linux linux-firmware iwd wireless-regdb intel-ucode efiboo
 
 ## Configuring the system
 
-To get the filesystems mounted at startup, they need to be listed in `/etc/fstab`:
+Let’s copy our *systemd-repart* generated _fstab_ to the freshly installed system.
 ```
-genfstab -U /mnt >> /mnt/etc/fstab
+cp /tmp/fstab /mnt/etc/fstab
 ```
 
-It is of the utmost importance to get it right. Execute `cat /mnt/etc/fstab` and check (carefully) its contents. It should look like
+While we are at it, let’s also copy the live iso network configuration
 ```
-UUID=xxxx-xxxx  /      btrfs  subvol=@,noatime      0 0
-UUID=xxxxxxxx   /home  btrfs  subvol=@home,noatime 0 0
-UUID=xxxxxxxx   /boot  vfat   ...                  0 2
+mkdir /mnt/var/lib/iwd
+cp /var/lib/iwd/SSID.psk /mnt/var/lib/iwd/SSID.psk
 ```
+changing _SSID_ appropriately.
 
 ## Still configuring, now in chroot environment
 
