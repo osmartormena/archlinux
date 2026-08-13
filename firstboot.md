@@ -25,16 +25,6 @@ EOF
 
 To activate the aliases, run `source ~/.bashrc`.
 
-## Solve the slow boot
-
-Because we installed the bootloader inside the _chroot_ environment, it did not create any EFI boot entries. Now, to rectify that, let's just run:
-```
-bootctl install
-efibootmgr
-mkinitcpio -P
-```
-Optionally, reboot now to check if it worked.
-
 ## Some systemd setup
 
 By default, systemd runs with a _graphical.target_. Let’s switch it to the _multi-user.target_, so _display-manager.service_ doesn’t get enabled.
