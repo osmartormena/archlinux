@@ -158,7 +158,7 @@ changing _SSID_ appropriately.
 
 Let's run:
 ```
-arch-chroot /mnt
+arch-chroot -S /mnt
 ```
 From now on, we are working inside the new installation.
 
