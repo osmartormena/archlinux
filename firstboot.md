@@ -51,12 +51,7 @@ systemctl enable --now iwd.service
 systemctl enable --now systemd-resolved.service
 ```
 
-And set our domain region:
-```
-iw reg set BR
-```
-
-Run `iwctl` to connect to a wireless network. Refer to [install.md](install.md).
+Because we copied the authentication file from the live iso, the WiFi should be working already.
 
 It is advisable to update the pacman database (and possibly upgrade some freshly installed package). Also, we'll enable colored output for pacman.
 ```
