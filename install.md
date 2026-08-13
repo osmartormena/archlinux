@@ -230,7 +230,7 @@ bootctl list
 
 Now we set a password for the _root user_:
 ```
-paswd
+passwd
 ```
 
 ### Final sanity check
