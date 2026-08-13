@@ -80,7 +80,7 @@ Label=EFI
 SizeMinBytes=1G
 SizeMaxBytes=1G
 Format=vfat
-MountPoint=
+MountPoint=/boot:defaults,noatime
 EOF
 
 cat << EOF > /tmp/repart.d/01-root.conf
@@ -91,7 +91,7 @@ Format=btrfs
 MakeDirectories=/@ /@home
 Subvolumes=/@ /@home
 DefaultSubvolume=/@
-MountPoint=
+MountPoint=/:defaults,noatime
 Compression=zstd
 EOF
 ```
