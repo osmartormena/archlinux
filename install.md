@@ -109,18 +109,6 @@ systemd-repart --dry-run=no --empty=force --definitions=/tmp/repart.d --offline=
 
 Because we used a FAT32 and a BTRFS filesystems, we need to push _dosfstools_ and _btrfs_progs_ to our packages stack.
 
-### Quick check of partition and subvolumes
-
-Run and check the output:
-```
-lsblk -f /dev/sda
-blkid /dev/sda1 /dev/sda2
-
-mount -o subvolid=5 /dev/sda2 /mnt
-btrfs subvolume list /mnt -t
-umount /mnt
-```
-
 ### Mount for Arch installation
 
 Now, let's mount the filesystems for the installation
@@ -134,13 +122,22 @@ mkdir /mnt/boot
 mount -o noatime /dev/sda1 /mnt/boot
 ```
 
-And, again, a quick check by running `findmnt`.
+Quick check the partition and subvolumes:
+```
+lsblk -f /dev/sda
+findmnt
+blkid /dev/sda1 /dev/sda2
+cat /tmp/fstab
+btrfs subvolume list /mnt -t
+```
 
 ## Installing the (bare-bones) system
 
-We obviously need a kernel (`linux`), some firmware (`linux-firmware`), and the base system (`base`). But, we also absolutelly need `iwd`, `systemd-resolvconf`, and `wireless-regdb` for wireless networking. We should also install: CPU microcode (`intel-ucode`); filesystem utilities (`efibootmgr`, `dosfstools`, and `btrfs-progs`); a text editor (`neovim`); local documentation (`man-db`, `man-pages`, and `texinfo`); and system fonts (`terminus-font`). Last, but not least, `bash-completion` for convenience.
+Now it’s time to pop our package stack. We obviously need a kernel (`linux`), some firmware (`linux-firmware`), and the base system (`base`). But, we also absolutelly need `iwd` and `wireless-regdb` for wireless networking. We should also install: CPU microcode (`intel-ucode`); filesystem utilities (`efibootmgr`, `dosfstools`, and `btrfs-progs`); a text editor (`neovim`); local documentation (`man-db`, `man-pages`, and `texinfo`); and system fonts (`terminus-font`). Last, but not least, `bash-completion` and `tmux`, for convenience.
+
+For some latter installation steps, we’ll also install `systemd-ukify`.
 ```
-pacstrap -K /mnt base linux linux-firmware iwd systemd-resolvconf wireless-regdb intel-ucode efibootmgr dosfstools btrfs-progs neovim man-db man-pages texinfo terminus-font bash-completion
+pacstrap -K /mnt base linux linux-firmware iwd wireless-regdb intel-ucode efibootmgr dosfstools btrfs-progs neovim man-db man-pages texinfo terminus-font bash-completion tmux systemd-ukify
 ```
 
 ## Configuring the system
