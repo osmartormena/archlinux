@@ -113,21 +113,3 @@ Listing the snapshots:
 ```
 snapper -c root list
 ```
-
-### Systemd-ukify
-```
-pacman -S systemd-ukify
-echo 'layout=uki' > /etc/kernel/install.conf
-```
-
-Check the existence of `/etc/kernel/cmdline` and its parameters. Run:
-```
-kernel-install inspect
-ls -l /usr/lib/kernel/install.d/
-```
-If the file `91-sbctl.install` exists and is active, it should be masked. (TODO)
-
-Regenerating the kernel installation
-```
-kernel-install add-all
-```
