@@ -144,7 +144,7 @@ pacstrap -K /mnt base linux linux-firmware iwd wireless-regdb intel-ucode efiboo
 
 Let’s copy our *systemd-repart* generated _fstab_ to the freshly installed system.
 ```
-cp /tmp/fstab /mnt/etc/fstab
+cp --update=all /tmp/fstab /mnt/etc/fstab
 ```
 
 While we are at it, let’s also copy the live iso network configuration
