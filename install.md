@@ -208,43 +208,22 @@ Running
 ```
 kernel-install add-all
 ```
-creates the UKI, which may be found at `/boot/EFI/Linux`.
+creates the UKI, which may be found at `/boot/EFI/Linux`, and can be inspected by:
+```
+ukify inspect /boot/EFI/Linux/*.efi
+```
 
-
-
-Now we create some configuration and entry files:
+Finally, create `/boot/loader/loader.conf`
 ```
 cat << EOF > /boot/loader/loader.conf
 default arch
 timeout 0
 editor no
 EOF
-
-
-cat << EOF > /boot/loader/entries/arch.conf
-title   Arch Linux
-linux   vmlinuz-linux
-initrd  intel-ucode.img
-initrd  initramfs-linux.img
-options root=UUID=<UUID> rootflags=subvol=@,noatime,compress=zstd rw
-EOF
 ```
-Reaplacing _<UUID>_ with the _UUID_ of `/dev/sda2`, which can be viewed by running `blkid /dev/sda2`.
-
-### Initramfs
-
-Because we changed the system font and installed the bootloader, we need to recreate the _initramfs_:
+and check what *systemd-boot* sees by:
 ```
-mkinitcpio -P
-```
-
-Check `ls -lh /boot`, it should look like:
-```
-EFI/
-loader/
-intel-ucode.img
-initramfs-linux.img
-vmlinuz-linux
+bootctl list
 ```
 
 ### Root password
