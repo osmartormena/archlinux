@@ -37,6 +37,7 @@ systemctl isolate multi-user.target
 
 First, let’s configure `iwd`:
 ```
+mkdir /etc/iwd
 cat << EOF > /etc/iwd/main.conf
 [General]
 EnableNetworkConfiguration=true
