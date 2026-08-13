@@ -91,7 +91,8 @@ Format=btrfs
 MakeDirectories=/@ /@home
 Subvolumes=/@ /@home
 DefaultSubvolume=/@
-MountPoint=/:defaults,noatime
+MountPoint=/@:defaults,noatime
+MountPoint=/@home:defaults,noatime
 Compression=zstd
 EOF
 ```
