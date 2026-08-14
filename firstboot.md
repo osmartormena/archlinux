@@ -126,3 +126,6 @@ ufw logging off
 ufw status verbose
 systemctl enable --now ufw.service
 ```
+
+## Set up a human user account
+We’ll use *systemd-homed* to create an encrypted volume under `/home`.
