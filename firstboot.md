@@ -16,6 +16,9 @@ EOF
 cat << EOF > ~/.bashrc
 # /root/.bashrc
 
+# Some useful environment variables
+export EDITOR='/bin/nvim'
+
 # Some useful aliases
 alias ls='ls --color=always'
 alias ll='ls -hl'
