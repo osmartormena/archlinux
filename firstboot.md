@@ -172,6 +172,16 @@ Run `visudo` and uncomment the line `%wheel ALL=(ALL:ALL) ALL`. Save an quit.
 
 Copy `.bash_profile` and `.bashrc` from the `/root` directory to `/home/tormena`, adjusting it.
 
+## Install basic development utilities
+
+
+## Set up a GUI
+
+It’s hard to consider a system useful without a web browser. Even though there are a choice number of good text-based web browsers, there’s such a high dependency on JavaScript that a graphical browser is, de facto, a must. So, here we go:
+```
+pacman -S xorg-server xorg-xinit
+```
+
 ## Install some basic utilities
 
 Now we’ll try and get the system useful for productivity work: coding, LaTeX authoring, e-mail, web browsing, and assorted minor utilities. All just for the TTY.
