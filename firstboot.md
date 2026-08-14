@@ -61,13 +61,17 @@ pacman -Suy
 
 ## Some more systemd setup
 Now that wireless networking should work reliably, let’s setup some more units:
-
+```
+timedatectl set-ntp true
+echo '650' > /sys/class/backlight/intel_backlight/brightness
+echo '64' > /sys/class/leds/smc\:\:kbd_backlight/brightness
+```
 
 ## Set up Snapper
 
 First, let's download the packages:
 ```
-pacman -S snapper snap-pac
+pacman -S snapper
 ```
 
 Now we run
@@ -81,9 +85,9 @@ Now setting up for manual snapshots + pacman snapshots only. Edit `/etc/snapper/
 TIMELINE_CREATE="no"
 TIMELINE_CLEANUP="no"
 
-NUMBER_CLEANUP="yes"
+NUMBER_CLEANUP="no"
 NUMBER_LIMIT="10"
-NUMBER_LIMIT_IMPORTANT="5"
+NUMBER_LIMIT_IMPORTANT="10"
 
 EMPTY_PRE_POST_CLEANUP="yes"
 ```
@@ -91,7 +95,6 @@ EMPTY_PRE_POST_CLEANUP="yes"
 Because we do not use automatic snapshots, we can disable the timeline timer. Also, because we want to clear the pacman pre-post snapshots, we want to enable the cleanup timer:
 ```
 systemctl disable --now snapper-timeline.timer
-systemctl enable --now snapper-cleanup.timer
 ```
 
 Checking:
@@ -102,15 +105,10 @@ btrfs subvolume list /
 
 ### Now we'll set the first manual snapshot
 
-With this (very) minimal installation, let's create a safe point of return by creating our first (important) snapshot.
+With this (very) minimal installation, let's create a safe point of return by creating our first snapshot.
 
 ```
-snapper -c root create --description "Fresh install" --userdata important=yes
-```
-
-For snapshots that may not be “important”:
-```
-snapper -c root create --description "Known good state"
+snapper -c root create --description "Fresh install"
 ```
 
 Listing the snapshots:
