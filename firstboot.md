@@ -140,3 +140,14 @@ Modify `/etc/systemd/homed.conf`, so that it contains:
 DefaultStorage=luks
 DefaultFileSystemType=btrfs
 ```
+
+Now we run:
+```
+homectl create tormena \
+--real-name="Osmar Tormena Júnior" \
+--email-address=tormena@utfpr.edu.br \
+--location="Campo Mourão, PR, BR" \
+--birth-date=1986-03-06 \
+--member-of=wheel \
+--luks-extra-mount-options="compress=zstd:3,noatime"
+```
