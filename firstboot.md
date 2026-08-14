@@ -117,3 +117,12 @@ Listing the snapshots:
 ```
 snapper -c root list
 ```
+
+## Install a firewall
+```
+pacman -S ufw
+ufw enable
+ufw logging off
+ufw status verbose
+systemctl enable --now ufw.service
+```
