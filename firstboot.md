@@ -128,4 +128,15 @@ systemctl enable --now ufw.service
 ```
 
 ## Set up a human user account
+
 We’ll use *systemd-homed* to create an encrypted volume under `/home`.
+```
+systemctl enable --now systemd-homed.service
+```
+
+Modify `/etc/systemd/homed.conf`, so that it contains:
+```
+[Home]
+DefaultStorage=luks
+DefaultFileSystemType=btrfs
+```
