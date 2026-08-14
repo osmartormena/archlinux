@@ -65,6 +65,8 @@ Now that wireless networking should work reliably, let’s setup some more units
 timedatectl set-ntp true
 echo '650' > /sys/class/backlight/intel_backlight/brightness
 echo '64' > /sys/class/leds/smc\:\:kbd_backlight/brightness
+rfkill block bluetooth
+
 ```
 
 ## Set up Snapper
