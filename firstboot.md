@@ -158,3 +158,14 @@ homectl inspect tormena
 ```
 
 ### Make this user a sudoer
+First, we need the _sudo_ package:
+```
+pacman -S sudo
+```
+
+Checking that the user belongs to group _wheel_:
+```
+id tormena
+```
+
+Run `visudo` and uncomment the line `%wheel ALL=(ALL:ALL) ALL`. Save an quit.
