@@ -150,4 +150,8 @@ homectl create tormena \
 --birth-date=1986-03-06 \
 --member-of=wheel \
 --luks-extra-mount-options="compress=zstd:3,noatime"
+homectl activate tormena
+homectl inspect tormena
 ```
+
+### Make this user a sudoer
