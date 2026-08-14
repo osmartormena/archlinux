@@ -169,3 +169,16 @@ id tormena
 ```
 
 Run `visudo` and uncomment the line `%wheel ALL=(ALL:ALL) ALL`. Save an quit.
+
+Copy `.bash_profile` and `.bashrc` from the `/root` directory to `/home/tormena`, adjusting it.
+
+## Install some basic utilities
+
+Now we’ll try and get the system useful for productivity work: coding, LaTeX authoring, e-mail, web browsing, and assorted minor utilities. All just for the TTY.
+
+### Web browser
+
+Having a web browser is great for basic usage:
+```
+
+```
