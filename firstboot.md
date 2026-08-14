@@ -173,7 +173,9 @@ Run `visudo` and uncomment the line `%wheel ALL=(ALL:ALL) ALL`. Save an quit.
 Copy `.bash_profile` and `.bashrc` from the `/root` directory to `/home/tormena`, adjusting it.
 
 ## Install basic development utilities
-
+```
+pacman -S base-devel gcc-fortran git github-cli
+```
 
 ## Set up a GUI
 
