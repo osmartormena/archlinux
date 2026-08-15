@@ -139,7 +139,7 @@ Quick check the partition and subvolumes:
 ```
 lsblk -f /dev/sda
 findmnt
-blkid /dev/sda1 /dev/sda2
+blkid /dev/sda1 /dev/sda2 /dev/sda3
 cat /tmp/fstab
 btrfs subvolume list /mnt -t
 ```
