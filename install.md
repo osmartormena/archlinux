@@ -123,13 +123,16 @@ Because we used a FAT32 and a BTRFS filesystems, we need to push _dosfstools_ an
 
 Now, let's mount the filesystems for the installation
 ```
-mount -o subvol=@,noatime,compress=zstd /dev/sda2 /mnt
+mount -o subvol=@,noatime,compress=zstd /dev/sda3 /mnt
 
 mkdir /mnt/home
-mount -o subvol=@home,noatime,compress=zstd /dev/sda2 /mnt/home
+mount -o subvol=@home,noatime,compress=zstd /dev/sda3 /mnt/home
+
+mkdir /mnt/efi
+mount -o noatime /dev/sda1 /mnt/efi
 
 mkdir /mnt/boot
-mount -o noatime /dev/sda1 /mnt/boot
+mount -o noatime /dev/sda2 /mnt/boot
 ```
 
 Quick check the partition and subvolumes:
