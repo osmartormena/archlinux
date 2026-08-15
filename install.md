@@ -146,7 +146,7 @@ btrfs subvolume list /mnt -t
 
 ## Installing the (bare-bones) system
 
-Now it’s time to pop our package stack. We obviously need a kernel (`linux`), some firmware (`linux-firmware`), and the base system (`base`). But, we also absolutelly need `iwd` and `wireless-regdb` for wireless networking. We should also install: CPU microcode (`intel-ucode`); filesystem utilities (`efibootmgr`, `dosfstools`, and `btrfs-progs`); a text editor (`neovim`); local documentation (`man-db`, `man-pages`, and `texinfo`); and system fonts (`terminus-font`). Last, but not least, `bash-completion` and `tmux`, for convenience.
+Now it’s time to pop our package stack. We obviously need a kernel (`linux`), some firmware (`linux-firmware`), and the base system (`base`). But, we also absolutelly need `iwd` and `wireless-regdb` for wireless networking. We should also install: CPU microcode (`intel-ucode`); filesystem utilities (`efibootmgr`, `dosfstools`, and `btrfs-progs`); development tools (`base-devel`); a text editor (`neovim`); local documentation (`man-db` and `man-pages`); and system fonts (`terminus-font`). Last, but not least, `bash-completion` and `tmux`, for convenience.
 
 For some latter installation steps, we’ll also install `systemd-ukify`.
 ```
