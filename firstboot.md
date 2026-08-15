@@ -219,7 +219,7 @@ EOF
 
 Para que o teclado com acentos também funcione na GUI
 ```
-localectl --no-convert set-x11-keymap br "" nativo-us
+localectl --no-convert set-x11-keymap us "" intl
 localectl
 ```
 
