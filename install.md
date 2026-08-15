@@ -252,6 +252,7 @@ Check the output of
 ```
 findmnt /
 findmnt /home
+findmnt /efi
 findmnt /boot
 
 bootctl status
