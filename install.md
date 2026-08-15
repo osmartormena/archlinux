@@ -229,7 +229,7 @@ ukify inspect /boot/EFI/Linux/*.efi
 Finally, create `/boot/loader/loader.conf`
 ```
 cat << EOF > /boot/loader/loader.conf
-default arch
+default @saved
 timeout 0
 editor no
 EOF
