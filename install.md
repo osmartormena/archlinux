@@ -150,7 +150,7 @@ Now it’s time to pop our package stack. We obviously need a kernel (`linux`), 
 
 For some latter installation steps, we’ll also install `systemd-ukify`.
 ```
-pacstrap -K /mnt base linux linux-firmware iwd wireless-regdb intel-ucode efibootmgr dosfstools btrfs-progs neovim man-db man-pages texinfo terminus-font bash-completion tmux systemd-ukify
+pacstrap -K /mnt base linux linux-firmware iwd wireless-regdb intel-ucode efibootmgr dosfstools btrfs-progs base-devel neovim man-db man-pages terminus-font bash-completion tmux systemd-ukify
 ```
 
 ## Configuring the system
