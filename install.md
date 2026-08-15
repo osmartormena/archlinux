@@ -208,7 +208,7 @@ To install `systemd-boot` as the bootloader, run:
 ```
 bootctl install
 ```
-It should install to the _ESP_ partition (`/dev/sda1`) mounted on `/boot`.
+It should install to the _ESP_ partition (`/dev/sda1`) mounted on `/efi`.
 
 Create the file `/etc/kernel/cmdline` with the contents `root=UUID=<UUID> rootflags=subvol=@,noatime,compress=zstd rw`. The _UUID_ from the root filesystem can be copied from `/etc/fstab`.
 
