@@ -77,16 +77,26 @@ cat << EOF > /tmp/repart.d/00-esp.conf
 [Partition]
 Type=esp
 Label=EFI
+SizeMinBytes=512M
+SizeMaxBytes=512M
+Format=vfat
+MountPoint=/efi:defaults,noatime
+EOF
+
+cat << EOF > /tmp/repart.d/01-boot.conf
+[Partition]
+Type=xbootldr
+Label=BOOT
 SizeMinBytes=1G
 SizeMaxBytes=1G
 Format=vfat
 MountPoint=/boot:defaults,noatime
 EOF
 
-cat << EOF > /tmp/repart.d/01-root.conf
+cat << EOF > /tmp/repart.d/02-root.conf
 [Partition]
 Type=root
-Label=Arch Linux
+Label=ROOT
 Format=btrfs
 MakeDirectories=/@ /@home
 Subvolumes=/@ /@home
