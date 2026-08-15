@@ -195,5 +195,5 @@ Now we’ll try and get the system useful for productivity work: coding, LaTeX a
 
 Having a web browser is great for basic usage:
 ```
-
+firefox firefox-dark-reader
 ```
