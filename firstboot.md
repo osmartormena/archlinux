@@ -176,7 +176,7 @@ pacman -S base-devel gcc-fortran git github-cli
 
 It’s hard to consider a system useful without a web browser. Even though there are a choice number of good text-based web browsers, there’s such a high dependency on JavaScript that a graphical browser is, de facto, a must. So, here we go:
 ```
-pacman -S xorg-server xorg-xinit
+pacman -S xorg-server xorg-xinit xorg-xrandr
 ```
 
 ## Install some basic utilities
