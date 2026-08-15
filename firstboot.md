@@ -169,7 +169,7 @@ Copy `.bash_profile` and `.bashrc` from the `/root` directory to `/home/tormena`
 
 ## Install basic development utilities
 ```
-pacman -S base-devel gcc-fortran git github-cli
+pacman -S base-devel gcc-fortran git github-cli openssh
 ```
 
 ## Set up a GUI
@@ -184,8 +184,23 @@ pacman -S xorg-server xorg-xinit xorg-xrandr libxft libxinerama ttf-terminus-ner
 ### X11-Xorg
 On the human user account, create the files
 ```
+cat << EOF > ~/.xinitrc
+#!/bin/sh
 
+xrdb -merge ~/.Xresources
+
+slstatus &
+exec dwm
+EOF
+
+chmod +x ~/.xinitrc
+
+cat << EOF > ~/.Xresources
+Xft.dpi: 227
+EOF
 ```
+
+Agora, basta executar `startx` para abrir a GUI.
 
 ## Install some basic utilities
 
@@ -195,5 +210,5 @@ Now we’ll try and get the system useful for productivity work: coding, LaTeX a
 
 Having a web browser is great for basic usage:
 ```
-firefox firefox-dark-reader
+pacman -S firefox firefox-dark-reader
 ```
