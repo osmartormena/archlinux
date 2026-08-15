@@ -177,9 +177,51 @@ pacman -S base-devel gcc-fortran git github-cli openssh
 It’s hard to consider a system useful without a web browser. Even though there are a choice number of good text-based web browsers, there’s such a high dependency on JavaScript that a graphical browser is, de facto, a must. So, here we go:
 ```
 pacman -S xorg-server xorg-xinit xorg-xrandr libxft libxinerama ttf-terminus-nerd
+
+mkdir -p ~/.config/fontconfig
+cat << 'EOF' > ~/.config/fontconfig/fonts.conf
+<?xml version="1.0"?>
+<!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
+
+<fontconfig>
+
+    <!-- General rendering -->
+    <match target="font">
+        <edit name="antialias" mode="assign">
+            <bool>true</bool>
+        </edit>
+
+        <!-- Preserve the font's proportions while still getting
+             some pixel-grid alignment. -->
+        <edit name="hinting" mode="assign">
+            <bool>true</bool>
+        </edit>
+
+        <edit name="hintstyle" mode="assign">
+            <const>hintslight</const>
+        </edit>
+
+        <!-- Use the TrueType instructions rather than forcing
+             FreeType's autohinter. -->
+        <edit name="autohint" mode="assign">
+            <bool>false</bool>
+        </edit>
+
+        <!-- Grayscale rather than colored LCD fringes. -->
+        <edit name="rgba" mode="assign">
+            <const>none</const>
+        </edit>
+    </match>
+
+</fontconfig>
+EOF
 ```
 
 ### Suckless
+
+```
+Terminess Nerd Font Mono:size=10
+```
 
 ### X11-Xorg
 On the human user account, create the files
@@ -197,6 +239,11 @@ chmod +x ~/.xinitrc
 
 cat << EOF > ~/.Xresources
 Xft.dpi: 227
+Xft.antialias: 1
+Xft.hinting: 1
+Xft.hintstyle: hintslight
+Xft.autohint: 0
+Xft.rgba: none
 EOF
 ```
 
