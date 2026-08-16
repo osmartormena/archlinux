@@ -19,6 +19,6 @@ $
 
 Nesta seção, todos os comandos são executados como __root__, através do _boot_ na live ISO. O passo-a-passo está contido em [Install.md](install.md).
 
-## Primeiro _boot_ do sistema e configurações adicionais
+## Primeiro ___boot___ do sistema e configurações adicionais
 
 Os comandos desta seção são executados no sistema recém instalado. A maioria dos comandos são executados como __root__. Os passos estão contidos em [FirstBoot.md](firstboot.md).

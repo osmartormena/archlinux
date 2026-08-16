@@ -1,17 +1,23 @@
-# Installing ArchLinux from a bootable thumbdrive
+# Instalando o ArchLinux de um ___thumbdrive___
 
-All commands are run as `root` within the live environment.
+Todos os comandos são executados como usuário __root__. A mídia de instalação possui uma pluralidade de pacotes disponíveis. Eles não são automaticamente instalados no sistemas, apenas os requeridos. Nas seções a seguir, o racional para a escolha específica de alguns pacotes serão destacadas.
 
-## Setting keyboard mapping, console font, and system locale
+## Ajustando o ___layout___ do teclado e fonte do console
 
-The man page for *loadkeys* says that the keymaps are stored in `/usr/share/kbd/keymaps`, which is owned by the _kbd_ package, which itself is a dependency of _systemd_, which is a dependency of the _base_ package. So, nothing to be done here.
+> [!Note]
+> Em razão da alta resolução (227 DPI) do Retina Display, bem como a disposição específica do teclado do MBP ANSI, as opções aqui utilizadas não são universais. Consulte a documentação.
 
-The *setfont* man page says that the console fonts are in `/usr/share/kbd/consolefonts`, which is owned by _kbd_ and _terminus-font_ packages. The font I’ve chosen is from _terminus-font_, so I’ll push this dependency into the package stack.
+Para o _layout_ de teclado operar naturalmente com acentos, til e cedilha, é necessário configurar o `loadkeys` adequadamente. O diretório `/usr/share/kbd/keymaps` contém todos os _layouts_ disponíveis.
+
+A escolha da fonte é mais pessoal: certifique-se de usar uma fonte que suporte acentos, til e cedilha. Recomendo uma fonte da família Terminus. Minha é pautada pela altíssima resolução do Retina Display e a fonte deve parecer enrome em monitores convencionais. O diretório `/usr/share/kbd/consolefonts`, contém as fontes. Tente uma das seguintes opções: `ter-114b`, `ter-116b`, `ter-118b`, `ter-120b`, `ter-122b`, `ter-124b`, `ter-128b`, ou `ter-132b`.
+
 ```
-loadkeys br-latin1-us
-setfont ter-132b
+# loadkeys br-latin1-us
+# setfont ter-132b
 ```
-These choices allow me to input accented characters and works well with my keyboard.
+
+> [!Info]
+> O pacote `terminus-font` precisará ser instalado para esta fonte estar disponível no sistema.
 
 ## Connect to the internet
 
