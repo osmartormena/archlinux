@@ -19,13 +19,38 @@ A escolha da fonte é mais pessoal: certifique-se de usar uma fonte que suporte 
 > [!Info]
 > O pacote `terminus-font` precisará ser instalado para esta fonte estar disponível no sistema.
 
-## Connect to the internet
+## Conecte-se à Internet
 
-First, to unlock access to 5 GHz (and 6 GHz) bands for WiFi, the _wireless-regdb_ package is necessary (pushed to package stack). Running
+Uma conexão cabeada deve ser reconhecida automaticamente. Esta seção trata exclusivamente de uma conexão sem fio.
+
+> [!Note]
+> O módulo sem fio da Broadcom, utilizado no MBP, possui uma notória e conturbada história acerca de seus _drivers_ e suporte no _kernel_ do Linux. Há um excesso de zelo na instruções desta seção para garantir a plena funcionalidade dos canais de 5 GHz (e, futuramente, também 6 GHz).
+
+Para garantir o funcionamento do WiFi nas bandas de 5 GHz (ou 6 GHz) é necessário respeitar a canalização e os limites de potência nacionais. O pacote `wireless-regdb` provê essas informações. Executando
 ```
-iw reg set BR
+# iw reg set BR
 ```
-allows me to properly use my WiFi card with faster wireless networks.
+garante a visibilidade das bandas além de 2,4 GHz.
+
+Vamos averiguar o nome do dispositivo de rede. Executando
+```
+# iwctl device list
+```
+é retornado uma lista de dispositivos de rede, provavelmente com um único item. No meu caso, o nome é `wlan0`. Agora, executando
+```
+# iwctl station wlan0 scan
+# iwctl station wlan0 get-networks
+```
+deve resultar em uma lista de redes sem fio ao alcance. Os nomes de rede são chamados de SSIDs. Nas subseções a seguir, substitua `SSID` pelo seu nome de rede. Caso sua rede seja oculta, consulte a documentação para conectar a uma BSSID.
+
+### Para redes abertas
+Redes abertas não possuem segurança (senha). Para se conectar a uma rede aberta, basta executar
+```
+iwctl station wlan0 connect SSID
+```
+Um arquivo `.open` é criado com a configuração desta rede.
+
+### Para redes pessoais com senha (WPA-PSK)
 
 Now, running *iwctl* gets me authenticated to a WPA-PSK wireless network. So _iwd_ is also pushed to the package stack.
 ```
@@ -33,10 +58,18 @@ iwctl --passphrase=PASSPHRASE station DEVICE connect SSID
 ```
 Substituting _PASSPHRASE_, _DEVICE_, and _SSID_ accordingly. If you need to connect to WPA Enterprise network, refer to `man iwd.network`. In the installed system, _iwd_ can provide a DHCP client, but requires configuration, refer to `man iwd.config`.
 
-Now, we can test the network connectivity:
+### Para redes empresariais (WPA-PEAP)
+
+### Testando a conectividade
+
+Se tudo estiver ok, não devemos perder nenhum `ping`.
+
 ```
-ping -c 3 ping.archlinux.org
+ping -c 3 google.com
 ```
+
+> [!Info]
+> Os pacotes `iwd` e `wireless-regdb` precisarão ser instalados.
 
 ## Update the system clock
 
