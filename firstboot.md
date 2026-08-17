@@ -71,58 +71,8 @@ echo '64' > /sys/class/leds/smc\:\:kbd_backlight/brightness
 rfkill block bluetooth
 ```
 
-## Set up Snapper
-
-First, let's download the packages:
+## Ativando o firewall
 ```
-pacman -S snapper
-```
-
-Now we run
-```
-snapper -c root create-config /
-```
-to register `/` in `/etc/conf.d/snapper` (by the file `/etc/snapper/configs/root`). It also creates a new BTRFS subvolume `.snapshots` under the root (`@`) subvolume. Check it by running `btrfs subvolume list /`.
-
-Now setting up for manual snapshots + pacman snapshots only. Edit `/etc/snapper/configs/root` so it contains:
-```
-TIMELINE_CREATE="no"
-TIMELINE_CLEANUP="no"
-
-NUMBER_CLEANUP="no"
-NUMBER_LIMIT="10"
-NUMBER_LIMIT_IMPORTANT="10"
-
-EMPTY_PRE_POST_CLEANUP="yes"
-```
-
-Because we do not use automatic snapshots, we can disable the timeline timer. Also, because we want to clear the pacman pre-post snapshots, we want to enable the cleanup timer:
-```
-systemctl disable --now snapper-timeline.timer
-```
-
-Checking:
-```
-snapper -c root get-config
-btrfs subvolume list /
-```
-
-### Now we'll set the first manual snapshot
-
-With this (very) minimal installation, let's create a safe point of return by creating our first snapshot.
-
-```
-snapper -c root create --description "Fresh install"
-```
-
-Listing the snapshots:
-```
-snapper -c root list
-```
-
-## Install a firewall
-```
-pacman -S ufw
 ufw enable
 ufw logging off
 ufw status verbose
@@ -169,7 +119,6 @@ Copy `.bash_profile` and `.bashrc` from the `/root` directory to `/home/tormena`
 
 ## Install basic development utilities
 ```
-pacman -S base-devel gcc-fortran git github-cli openssh
 ```
 
 ## Set up a GUI

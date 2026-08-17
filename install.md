@@ -138,13 +138,13 @@ Primeiro, precisamos averiguar o nome do dispositivo que representa o SSD (ou HD
 ```
 # lsblk
 ```
-retorna uma lista estuturada de todos os dispositivos de armazenamento e partições reconhecidas. Caso possua um HDD ou SDD SATA, quase certamente seu dispositivo figura como `/dev/sda` (com `/dev/sda1`, `/dev/sda2`, etc. sendo suas partições). Caso possua um SSD NVMe, ele deve figurar como `/dev/nvme0n1` (com `/dev/nvme0n1p1`, `/dev/nvme0n1p2`, etc. sendo suas partições).
+retorna uma lista estuturada de todos os dispositivos de armazenamento e partições reconhecidas. Caso possua um HDD ou SDD SATA, quase certamente seu dispositivo figura como `/dev/sda` (com `/dev/sda1`, `/dev/sda2`, etc. sendo suas partições). Caso possua um SSD NVMe, ele deve figurar como `/dev/nvme0n1` (com `/dev/nvme0n1p1`, `/dev/nvme0n1p2`, etc. sendo suas partições). No meu caso, o SSD é `/dev/sda`.
 
 Nós vamos criar três partições: uma partição ESP (_EFI System Partition_) com 512 MB; uma partição do tipo _Extended Boot Loader Partition_ com 1 GB; e uma partição do tipo _root_ com o restante do disco.
 
 Após criar o diretório
 ```
-mkdir /tmp/repart.d
+# mkdir /tmp/repart.d
 ```
 vamos criar, usando nosso editor de texto “favorito” (`nano` ou `vim`), os seguintes arquivos: `/tmp/repart.d/00-esp.conf`, contendo:
 ```
@@ -184,169 +184,189 @@ Compression=zstd
 ```
 Aqui, já temos outras opções: o formato `btrfs` é um sistema de arquivos moderno, confiável e com algumas funcionalidades muito úteis. Esta partição será dividida em dois subvolumes (`/@` e `/@home`) separando o sistema das pastas pessoais de usuário(s). Uma das vantagens do `btrfs` é o suporte nativo a compressão do sistema de arquivos. Essa compressão é feita com mínimo _overhead_ computacional, oferecendo benefícios ao gargalo (lento) de leituras e escritas em disco, bem como maior longevidade. Ela também suporta a encriptação nativa dos arquivos pessoais, sem a necessidade da encriptação de todo o disco.
 
-Before commiting to disk, check the partition layout with:
+Antes de escrever a nova tabela de partição e criar os novos sistemas de arquivo em disco, cheque a saída de:
 ```
-systemd-repart --dry-run=yes --empty=force --definitions=/tmp/repart.d --offline=yes --append-fstab=replace --generate-fstab=/tmp/fstab /dev/sda
-```
-
-If everything checks out, then run:
-```
-systemd-repart --dry-run=no --empty=force --definitions=/tmp/repart.d --offline=yes --append-fstab=replace --generate-fstab=/tmp/fstab /dev/sda
+# systemd-repart --dry-run=yes --empty=force --definitions=/tmp/repart.d --offline=yes --append-fstab=replace --generate-fstab=/tmp/fstab /dev/sda
 ```
 
-Because we used a FAT32 and a BTRFS filesystems, we need to push _dosfstools_ and _btrfs_progs_ to our packages stack.
-
-### Mount for Arch installation
-
-Now, let's mount the filesystems for the installation
+Se tudo parece correto, execute (diga adeus aos dados!):
 ```
-mount -o subvol=@,noatime,compress=zstd /dev/sda3 /mnt
-
-mkdir /mnt/home
-mount -o subvol=@home,noatime,compress=zstd /dev/sda3 /mnt/home
-
-mkdir /mnt/efi
-mount -o noatime /dev/sda1 /mnt/efi
-
-mkdir /mnt/boot
-mount -o noatime /dev/sda2 /mnt/boot
+# systemd-repart --dry-run=no --empty=force --definitions=/tmp/repart.d --offline=yes --append-fstab=replace --generate-fstab=/tmp/fstab /dev/sda
 ```
 
-Quick check the partition and subvolumes:
+Agora você deve ter seu dispositivo corretamente particionado e um arquivo `/tmp/fstab` foi gerado. Pela ordem das operações, tenho: `/efi` em `/dev/sda1`; `/boot` em `/dev/sda2`; e os subvolumes BTRFS em `/dev/sda3`.
+
+> [!Info]
+> Como estamos usando sistemas de arquivo FAT32 e BTRFS, precisamos dessas ferramentas no sistema. Instale os pacotes `dosfstools` e `btrfs-progs`.
+
+### Montar os sistemas de arquivos para instalação
+
+Como estamos operando a partir da live ISO, vamos montar o dispositivo recém particionado em `/mnt`. 
 ```
-lsblk -f /dev/sda
+# mount -o subvol=@,noatime,compress=zstd /dev/sda3 /mnt
+
+# mkdir /mnt/home
+# mount -o subvol=@home,noatime,compress=zstd /dev/sda3 /mnt/home
+
+# mkdir /mnt/efi
+# mount -o noatime /dev/sda1 /mnt/efi
+
+# mkdir /mnt/boot
+# mount -o noatime /dev/sda2 /mnt/boot
+```
+
+Cheque, cuidadosamente, a saída dos seguinte comandos:
+```
+lsblk -f
 findmnt
 blkid /dev/sda1 /dev/sda2 /dev/sda3
 cat /tmp/fstab
 btrfs subvolume list /mnt -t
 ```
 
-## Installing the (bare-bones) system
+## Instalando o sistema
 
-Now it’s time to pop our package stack. We obviously need a kernel (`linux`), some firmware (`linux-firmware`), and the base system (`base`). But, we also absolutelly need `iwd` and `wireless-regdb` for wireless networking. We should also install: CPU microcode (`intel-ucode`); filesystem utilities (`efibootmgr`, `dosfstools`, and `btrfs-progs`); development tools (`base-devel`); a text editor (`neovim`); local documentation (`man-db` and `man-pages`); and system fonts (`terminus-font`). Last, but not least, `bash-completion` and `tmux`, for convenience.
+Aqui vou listar um bom número de pacotes que serão instalados no sistema. O racional para a escolha de cada um deles será exposto e, quando possível, escolhas alternativas serão apresentadas.
 
-For some latter installation steps, we’ll also install `systemd-ukify`.
+* Segundo a documentação oficial, são absolutamente imprescindíveis: o _kernel_ `linux`; _firmware_ `linux-firmware`; e uma coleção básica de pacotes `base`.
+* É altamente recomendável instalar atualizações de micro-código da CPU: ou `intel-ucode` ou `amd-ucode`, dependendo da sua CPU.
+* Caso seu computador não possua uma porta Ethernet, sua conexão sem fio também deve estar funcional já a partir da instalação: recomendo instalar `iwd` e `wireless-regdb`.
+* Com base em nosso sistema de arquivos, instale: `efibootmgr`, `dosfstools` e `btrfs-progs`.
+* Você __deve__ instalar um editor de texto: `nano` é uma boa opção; eu uso `neovim` pois minhas ferramentas de produtividade estão ligadas a ele.
+* É sempre recomendável instalar um _firewall_: `ufw` é descomplicado até no nome.
+* Ferramentas de desenvolvimento e acesso ao <github.com>: `base-devel`, `gcc-fortran`, `git`, `github-cli` e `openssh`.
+* A instalação de um _bootloader_ descrita mais adiante depende do pacote `systemd-ukify`.
+* A família de fonte Terminus é excelente para suporte diacrítico e legibilidade. Instale o pacote `terminus-font`.
+* Considero imprescindível ter a documentação local de todos o sistema: os pacotes `man-db` e `man-pages` dão acesso à documentação de cada comando e arquivo de configuração aqui referenciado.
+* Finalmente, algumas ferramentas de conveniência: `tmux` é muito útil para trabalhar no console; `bash-completion` ajuda a evitar a síndrome de tunel do carpo.
+
+Obviamente, essa lista de pacotes pode ser alterada e/ou extendida conforme sua necessidade e conveniência.
+
+O comando a seguir fará a instalação dos pacotes na raiz (subvolume padrão `/@`), montada em `/mnt`. A opção `-K` cria um novo _keyring_ para validação de pacotes na nova instalação.
 ```
-pacstrap -K /mnt base linux linux-firmware iwd wireless-regdb intel-ucode efibootmgr dosfstools btrfs-progs base-devel neovim man-db man-pages terminus-font bash-completion tmux systemd-ukify
+# pacstrap -K /mnt linux linux-firmware base intel-ucode iwd wireless-regdb efibootmgr dosfstools btrfs-progs neovim ufw base-devel gcc-fortran git github-cli openssh systemd-ukify terminus-font man-db man-pages tmux bash-completion
 ```
 
-## Configuring the system
+## Configurando o sistema
 
-Let’s copy our *systemd-repart* generated _fstab_ to the freshly installed system.
+Precisamos fazer alguns ajustes finais para que o sistema recém instalado seja funcional. A tabela de sistemas de arquivo criadas durante o particionamento do disco precisam ser copiadas para o novo sistema. Como já existe um _stub_ de instalação em `/mnt/etc/fstab`, é necessário sobrescrevê-lo com a opção `--update=all`.
 ```
-cp --update=all /tmp/fstab /mnt/etc/fstab
+# cp --update=all /tmp/fstab /mnt/etc/fstab
 ```
 
-While we are at it, let’s also copy the live iso network configuration
+Para evitar a reinserção das credenciais de rede, novamente, após o primeiro _boot_ do sistema, podemos copiar os arquivos `.open`, `.psk`, ou `.8021x` da live ISO para o novo sistema. Primeiro, criamos o diretório onde eles devem ser armazenados e depois copiados (novamente, substituindo `SSID` e a extensão conforme o seu caso).
 ```
-mkdir /mnt/var/lib/iwd
-cp /var/lib/iwd/SSID.psk /mnt/var/lib/iwd/SSID.psk
+# mkdir /mnt/var/lib/iwd
+# cp /var/lib/iwd/SSID{.open,.psk,.8021x} /mnt/var/lib/iwd/
 ```
-changing _SSID_ appropriately.
 
-## Still configuring, now in chroot environment
+## Ainda configurando, agora no ambiente 'chroot'
 
-Let's run:
+Alguns passos da configuração não podem ser feitos “de fora dela”. Então vamos ingressar no sistema recém instalado através de um mecanimso conhecido como 'chroot'. A opção `-S` é necessária para a correta instalação do _bootloader_.
 ```
-arch-chroot -S /mnt
+# arch-chroot -S /mnt
 ```
-From now on, we are working inside the new installation.
+Deste ponto em diante, nossos comandos não são mais executados no ambiente live ISO, mas no ambiente recém instalado.
 
 ### Time
 
+Por padrão, o ArchLinux mantém seu relógio de sistema sincronizado ao UTC, embora ainda mostre a hora de usuário de acordo com o fuso horário local. Aqui no estado do Paraná, a presente configuração basta.
 ```
-ln -sf /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime
-hwclock --systohc
+# ln -sf /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime
+# hwclock --systohc
 ```
 
 ### Locale
 
-For the POSIX C locale, there's no need to run `locale-gen`. Just run:
+Por simplicidade, neste momento, vamos manter o local padrão: POSIX C.
 ```
-echo 'LANG=C.UTF-8' > /etc/locale.conf
+# echo 'LANG=C.UTF-8' > /etc/locale.conf
 ```
 
-Also, ensure that `/etc/vconsole.conf` contains (edit with `nvim` if necessary):
+Também crie o arquivo `/etc/vconsole.conf` (usando seu editor de texto “favorito”) e ajuste seu conteúdo para
 ```
 KEYMAP=br-latin1-us
 FONT=ter-132b
 ```
+lembrando de ajustar para o seu _layout_ de teclado e tamanho de fonte, conforme na primeira seção.
 
-### Network
+### Rede
 
-First we need to set the _hostname_:
+É necessário definir um nome de host (_hostname_). Para evitar problemas, escolha um nome único, improvável de ser replicado em alguma rede que esteja conectado. Para mim, o _hostname_ é `tormenaArch`. Escolha um que te sirva e substitua abaixo.
 ```
-echo 'tormenaArch' > /etc/hostname
+# echo 'tormenaArch' > /etc/hostname
 ```
 
 ### Bootloader
 
-To install `systemd-boot` as the bootloader, run:
+Vamos usar o `systemd-boot` como _bootloader_. Execute
 ```
-bootctl install
+# bootctl install
 ```
-It should install to the _ESP_ partition (`/dev/sda1`) mounted on `/efi`, to the _XBOOTLDR_ partition (`/dev/sda2`) mounted on `/boot`.
+Isso deve ajustar as variáveis na NVRAM e copiar aluns arquivos para a partição ESP (`/dev/sda1`) montada em `/efi`, para a partição BOOT (`/dev/sda2`) montada em `/boot`.
 
-Create the file `/etc/kernel/cmdline` with the contents `root=UUID=<UUID> rootflags=subvol=@,noatime,compress=zstd rw loglevel=3`. The _UUID_ from the root filesystem can be copied from `/etc/fstab`.
+Crie o arquivo `/etc/kernel/cmdline` contendo `root=UUID=<UUID> rootflags=subvol=@,noatime,compress=zstd rw loglevel=3`. Substitua <UUID> pela UUID da partição raiz, contida em `/etc/fstab`.
 
-Now we create `/etc/kernel/install.conf`:
+Criando o arquivo `/etc/kernel/install.conf`
 ```
-echo 'layout=uki' > /etc/kernel/install.conf
+# echo 'layout=uki' > /etc/kernel/install.conf
+```
+é suficiente para que o `systemd-boot` utilize uma UKI (_Unified Kernel Image_) para fazer o _boot_.
+
+Executando
+```
+# kernel-install add-all
+```
+cria uma UKI para cada _kernel_ disponível em `/usr/lib/modules` e instala sob `/boot/EFI/Linux`. A UKI pode ser inspecionada por:
+```
+# ukify inspect /boot/EFI/Linux/*.efi
 ```
 
-Running
+Finalmente, crie o arquivo `/boot/loader/loader.conf`, contendo:
 ```
-kernel-install add-all
-```
-creates the UKI, which may be found at `/boot/EFI/Linux`, and can be inspected by:
-```
-ukify inspect /boot/EFI/Linux/*.efi
-```
-
-Finally, create `/boot/loader/loader.conf`
-```
-cat << EOF > /boot/loader/loader.conf
 default @saved
 timeout 0
 editor no
-EOF
 ```
-and check what *systemd-boot* sees by:
+e cheque se sua opção de _boot_ aparece para o __systemd-boot__:
 ```
-bootctl list
-```
-
-### Root password
-
-Now we set a password for the _root user_:
-```
-passwd
+# bootctl list
 ```
 
-### Final sanity check
+### Senha de 'root'
 
-Check the output of
+Vamos agora criar uma senha do usuário __root__ neste sistema (não se esqueça desta senha):
 ```
-findmnt /
-findmnt /home
-findmnt /efi
-findmnt /boot
-
-bootctl status
-
-lsblk -f
+# passwd
 ```
 
-If all checks out, then exit the chroot:
+### Checando a sanidade da instalação
+
+Averigue (para inconsistências) a saída dos comandos:
 ```
-exit
+# findmnt /
+# findmnt /home
+# findmnt /efi
+# findmnt /boot
+
+# bootctl status
+
+# lsblk -f
 ```
-Unmount the partition:
+
+Se tudo estiver certo, saia do ambiente 'chroot':
 ```
-umount -R /mnt
+# exit
 ```
-And reboot:
+
+De volta à live ISO, desmonte as partições sob `/mnt`
 ```
-reboot
+# umount -R /mnt
 ```
-Remebering to remove the installation media. This is a long boot!
+e reinicie
+```
+# reboot
+```
+
+> [!Important]
+> Lembre de remover a mídia de instalação!
