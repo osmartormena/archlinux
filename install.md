@@ -44,46 +44,67 @@ Vamos averiguar o nome do dispositivo de rede. Executando
 deve resultar em uma lista de redes sem fio ao alcance. Os nomes de rede são chamados de SSIDs. Nas subseções a seguir, substitua `SSID` pelo seu nome de rede. Caso sua rede seja oculta, consulte a documentação para conectar a uma BSSID.
 
 ### Para redes abertas
+
 Redes abertas não possuem segurança (senha). Para se conectar a uma rede aberta, basta executar
 ```
-iwctl station wlan0 connect SSID
+# iwctl station wlan0 connect SSID
 ```
-Um arquivo `.open` é criado com a configuração desta rede.
+Um arquivo `/var/lib/iwd/SSID.open` é criado com a configuração desta rede.
 
-### Para redes pessoais com senha (WPA-PSK)
+### Para redes pessoais com senha (WPA-Personal)
 
-Now, running *iwctl* gets me authenticated to a WPA-PSK wireless network. So _iwd_ is also pushed to the package stack.
+Para uma rede WPA-PSK (_Wi-Fi Protected Access Pre-Shared Key_), é necessário conhecer a senha (__PASSPHRASE__) da rede para autenticar a conexão. Para se conectar, execute:
 ```
-iwctl --passphrase=PASSPHRASE station DEVICE connect SSID
+# iwctl --passphrase=PASSPHRASE station wlan0 connect SSID
 ```
-Substituting _PASSPHRASE_, _DEVICE_, and _SSID_ accordingly. If you need to connect to WPA Enterprise network, refer to `man iwd.network`. In the installed system, _iwd_ can provide a DHCP client, but requires configuration, refer to `man iwd.config`.
+Um arquivo `/var/lib/iwd/SSID.psk` é criado com a configuração desta rede.
 
-### Para redes empresariais (WPA-PEAP)
+### Para redes empresariais (WPA-Enterprise)
+
+Em ambientes empresariais e universidades (incluindo a UTFPR), a autenticação da rede sem fio é feita usando credenciais personalizadas, ao invés de uma única senha compartilhada. Há vários modelos de operação. Aqui será exemplificado o WPA-PEAP (_WPA Protected Extensible Authentication Protocol_), bastante comum e utilizado na UTFPR.
+
+Agora, infelizmente, o utilitário `iwctl` sozinho não é capaz de autenticar a conexão. É necessário provisionar manualmente um arquivo `/var/lib/iwd/SSID.8021x`. Para tal, vamos utilizar um editor de texto. A live ISO possui dois: `nano` e `vim`. Se você nunca ouviu falar do `vim`, melhor usar o `nano` (eu retornarei neste tópico depois). Assim, a seu critério, execute `nano /var/lib/iwd/SSID.8021x` ou `vim /var/lib/iwd/SSID.8021x` (substituindo __SSID__ pelo nome da rede) e preencha com o seguinte conteúdo:
+```
+[Security]
+EAP-Method=PEAP
+EAP-Identity=·······
+EAP-PEAP-Phase2-Method=MSCHAPV2
+EAP-PEAP-Phase2-Identity=·······
+EAP-PEAP-Phase2-Password=···············
+```
+Preenchendo adequadamento `EAP-Identity` e `EAP-PEAP-Phase2-Identity` com seu nome de usuário e `EAP-PEAP-Phase2-Password` com sua senha. Agora, basta executar
+```
+# iwctl station wlan0 connect SSID
+```
+para se conectar à rede.
 
 ### Testando a conectividade
 
 Se tudo estiver ok, não devemos perder nenhum `ping`.
-
 ```
-ping -c 3 google.com
+# ping -c 3 google.com
 ```
 
 > [!Info]
 > Os pacotes `iwd` e `wireless-regdb` precisarão ser instalados.
 
-## Update the system clock
+## Atualize o relógio do sistema
 
-It is recommended to ensure the system clock is synchronized to prevent package signature failures. Just run:
+É altamente recomendável certificar-se que o relógio do sistema está sincronizado. Isso evita erros de checagem de assinatura nos pacotes. Execute:
 ```
-timedatectl
+# timedatectl
 ```
-which is part of _systemd_.
 
-## NVRAM EFI boot entries (optional)
+## (Opcional) variáveis de ___boot___ EFI na NVRAM
 
-If you have installed (and reinstalled) distros, multiple times, trying to get it right, your NVRAM may have a lot of stale entries. Because Apple UEFI implementation don't show us the available space, it is reasonable to check if it's not too full.
+> [!Warning]
+> As ações desta seção podem deixar muito difícil a recuperação do sistema e dos dados presentes nele. Sempre tenha um _backup_.
 
-Running `efibootmgr` gives me the following output:
+Caso você já tenha feito algumas instalações de distribuições Linux, BSD, macOS ou Windows (com ou sem _dual boot_), é provável que sua NVRAM esteja repleta de variáveis referentes à essas instalações antigas. Como muitas implementações da UEFI não mostra o espaço disponível na NVRAM, caso ela fique cheia, é possível ter problemas com novas instalações.
+
+Caso você esteja instalando o ArchLinux como _dual boot_, seja extremamente cuidadoso aqui, pois você pode remover a variável que permite seu outro sistema operacional fazer _boot_. Melhor deixar a NVRAM como está. Caso queria usar o ArchLinux como seu único sistema operacional, os passos a seguir são perfeitamente seguros.
+
+Executando `efibootmgr` em meu computador, produz a seguinte saída (truncada por simplicidade e legibilidade):
 ```
 BootCurrent: 0000
 Timeout: 5 seconds
@@ -95,24 +116,38 @@ Boot0081* Mac OS X	…
 BootFFFF* 	…
 ```
 
-I have 5 entries: `0000` and `0001` are archlinux (the last one, a fallback); `0080`, `0081`, and `FFFF` are from Apple and I prefer not to touch them. If you have other entries, they may be removed by running `efibootmgr -b ???? -B`, where `????` is the 4-digit entry number.
+Vejam que eu possuo 5 variáveis de _boot_ EFI: `Boot0000` e `Boot0001` são do ArchLinux (a segunda, um _fallback_ caso um novo _kernel_ apresente problemas); `Boot0080`, `Boot0081` e `BootFFFF` são da Apple. Como a UEFI da Apple não segue rigorosamente os padrões, prefiro preservar essas variáveis.
 
-To keep my NVRAM from bloating (and prevent future installation errors), I'll run:
+Caso eu deseje reinstalar o sistema, para evitar que minha NVRAM fique cheia de variáveis espúrias, posso remover as entradas `Boot0000` e `Boot0001`, através dos comandos:
 ```
-efibootmgr -b 0000 -B
-efibootmgr -b 0001 -B
+# efibootmgr -b 0000 -B
+# efibootmgr -b 0001 -B
 ```
-Now, we also push _efibootmgr_ to the package stack.
 
-## Partition the disk, create and mount the filesystems
+> [!Info]
+> O pacote `efibootmgr` precisa ser instalado no sistema, caso queira utilizá-lo depois.
 
-I'll create an EFI System Partition (1 GB) and a Linux root partition, using `systemd-repart` (part of _systemd_).
+## Partição do disco e criação dos sistemas de arquivos
 
-Let's create the partition definition files:
+> [!Caution]
+> As ações desta seção apagam irrecuperavelmente os dados nas partições de disco onde são aplicadas. Sempre tenha um _backup_ de seus dados.
+
+O caso mais simples é uma instalação usando todo o disco. Caso esteja fazendo um _dual boot_, sugiro seguir __atentamente__ as instruções oficiais. As instruções são válidas tanto para SSD quanto para HDD.
+
+Primeiro, precisamos averiguar o nome do dispositivo que representa o SSD (ou HDD) no sistema. Executando
+```
+# lsblk
+```
+retorna uma lista estuturada de todos os dispositivos de armazenamento e partições reconhecidas. Caso possua um HDD ou SDD SATA, quase certamente seu dispositivo figura como `/dev/sda` (com `/dev/sda1`, `/dev/sda2`, etc. sendo suas partições). Caso possua um SSD NVMe, ele deve figurar como `/dev/nvme0n1` (com `/dev/nvme0n1p1`, `/dev/nvme0n1p2`, etc. sendo suas partições).
+
+Nós vamos criar três partições: uma partição ESP (_EFI System Partition_) com 512 MB; uma partição do tipo _Extended Boot Loader Partition_ com 1 GB; e uma partição do tipo _root_ com o restante do disco.
+
+Após criar o diretório
 ```
 mkdir /tmp/repart.d
-
-cat << EOF > /tmp/repart.d/00-esp.conf
+```
+vamos criar, usando nosso editor de texto “favorito” (`nano` ou `vim`), os seguintes arquivos: `/tmp/repart.d/00-esp.conf`, contendo:
+```
 [Partition]
 Type=esp
 Label=EFI
@@ -120,9 +155,11 @@ SizeMinBytes=512M
 SizeMaxBytes=512M
 Format=vfat
 MountPoint=/efi:defaults,noatime
-EOF
+```
+Aqui, alguns atributos são auto-descritivos. O `Label` é cosmético e pode ser alterado para qualquer coisa que te agrade. o `Format=vfat` é obrigatório, pois a UEFI só reconhece os formatos `FAT12`, `FAT16` e `FAT32`, e o `vfat` escolhe um deles, baseado no tamanho da partição. O atributo `MountPoint` define onde este sistema de arquivos será montado na hierarquia, bem como suas opções de montagem: os _defaults_ são bem racionais e a opção `noatime` ajuda muito com a vida útil de SSDs.
 
-cat << EOF > /tmp/repart.d/01-boot.conf
+O arquivo `/tmp/repart.d/01-boot.conf` possui estrutura muito similar:
+```
 [Partition]
 Type=xbootldr
 Label=BOOT
@@ -130,9 +167,10 @@ SizeMinBytes=1G
 SizeMaxBytes=1G
 Format=vfat
 MountPoint=/boot:defaults,noatime
-EOF
+```
 
-cat << EOF > /tmp/repart.d/02-root.conf
+E, finalmente, vamos definir a partição _root_ (raiz) através do arquivo `/tmp/repart.d/02-root.conf`:
+```
 [Partition]
 Type=root
 Label=ROOT
@@ -143,8 +181,8 @@ DefaultSubvolume=/@
 MountPoint=/@:defaults,noatime,compress=zstd
 MountPoint=/@home:defaults,noatime,compress=zstd
 Compression=zstd
-EOF
 ```
+Aqui, já temos outras opções: o formato `btrfs` é um sistema de arquivos moderno, confiável e com algumas funcionalidades muito úteis. Esta partição será dividida em dois subvolumes (`/@` e `/@home`) separando o sistema das pastas pessoais de usuário(s). Uma das vantagens do `btrfs` é o suporte nativo a compressão do sistema de arquivos. Essa compressão é feita com mínimo _overhead_ computacional, oferecendo benefícios ao gargalo (lento) de leituras e escritas em disco, bem como maior longevidade. Ela também suporta a encriptação nativa dos arquivos pessoais, sem a necessidade da encriptação de todo o disco.
 
 Before commiting to disk, check the partition layout with:
 ```
