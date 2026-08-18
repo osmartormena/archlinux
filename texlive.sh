@@ -1,30 +1,34 @@
 #!/bin/sh
 
+set +h
+
 # Versão
 VERSION=2026
 
-# Instalação
-if test ! -d /opt/texlive; then
-	echo "Instalando TeXLive ${TL}…"
-	mkdir -p /opt/texlive
-	if test ! -d install-tl; then
-		$CURL https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
-		mkdir install-tl
-		$TAR install-tl-unx.tar.gz -C install-tl --strip-component=1
-		rm install-tl-unx.tar.gz
-	fi
-	cat > install-tl/texlive.profile << EOF
+## Ajustando o prefixo
+#sudo chown -R tormena:tormena /usr/local
+#chmod -R g+rwx /usr/local
+
+## Instalação
+#mkdir /usr/local/texlive
+
+if [ ! -L /usr/local/bin/tlmgr ]; then
+	curl -LO https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
+	mkdir install-tl
+	tar -xf install-tl-unx.tar.gz -C install-tl --strip-component=1
+	rm install-tl-unx.tar.gz
+	cat << EOF > ./install-tl/texlive.profile
 # Perfil personalizado de instalação do TeXLive
 selected_scheme scheme-infraonly
-TEXDIR /opt/texlive/$TL
-TEXMFCONFIG $HOME/.texlive/$TL/texmf-config
-TEXMFHOME $HOME/.texlive/texmf
-TEXMFLOCAL /opt/texlive/texmf-local
-TEXMFSYSCONFIG /opt/texlive/$TL/texmf-config
-TEXMFSYSVAR /opt/texlive/$TL/texmf-var
-TEXMFVAR $HOME/.texlive/$TL/texmf-var
-binary_universal-darwin 1
-instopt_adjustpath 0
+TEXDIR /usr/local/texlive/$VERSION
+TEXMFCONFIG ~/.texlive/texmf-config
+TEXMFHOME ~/texmf
+TEXMFLOCAL /usr/local/texlive/texmf-local
+TEXMFSYSCONFIG /usr/local/texlive/$VERSION/texmf-config
+TEXMFSYSVAR /usr/local/texlive/$VERSION/texmf-var
+TEXMFVAR ~/.texlive/texmf-var
+binary_x86_64-linux 1
+instopt_adjustpath 1
 instopt_adjustrepo 1
 instopt_letter 0
 instopt_portable 0
@@ -38,14 +42,19 @@ tlpdbopt_generate_updmap 1
 tlpdbopt_install_docfiles 1
 tlpdbopt_install_srcfiles 0
 tlpdbopt_post_code 1
+tlpdbopt_sys_bin /usr/local/bin
+tlpdbopt_sys_info /usr/local/info
+tlpdbopt_sys_man /usr/local/man
 EOF
 
-	./install-tl/install-tl -no-verify-downloads -profile install-tl/texlive.profile
-	rm -r install-tl
-	echo "Desabilitando formatos não utilizados…"
-	mkdir -p /opt/texlive/$TL/texmf-config/web2c
-	cat > /opt/texlive/$TL/texmf-config/web2c/fmtutil.cnf << EOF
-# Modificando /opt/texlive/$TL/texmf−dist/web2c/fmtutil.cnf
+	./install-tl/install-tl -profile ./install-tl/texlive.profile
+	rm -r ./install-tl
+fi
+
+# Configurando o TeXLive
+mkdir /usr/local/texlive/$VERSION/texmf-config/web2c
+cat << EOF > /usr/local/texlive/$VERSION/texmf-config/web2c/fmtutil.cnf
+# Modificando /usr/local/texlive/$VERSION/texmf−dist/web2c/fmtutil.cnf
 #
 # Disabilitando formatos não utilizados
 #
@@ -68,23 +77,8 @@ pdflatex pdftex language.dat -translate-file=cp227.tcx *pdflatex.ini
 pdftex pdftex language.def -translate-file=cp227.tcx *pdfetex.ini
 EOF
 
-	echo "Instalando pacotes adicionais…"
-	echo "Da collection-basic:"
-	echo "Da collection-latex:"
-	echo "Da collection-latexrecommended:"
-	echo "Da collection-latexextra:"
-	echo "Da collection-fontsrecommended:"
-	echo "Da collection-binextra:"
-	echo "Da collection-bibtexextra:"
-	echo "Da collection-mathscience:"
-	echo "Da collection-pictures:"
-	echo "Da collection-langenglish:"
-	echo "Da collection-langeuropean:"
-	echo "Da collection-langfrench:"
-	echo "Da collection-langgerman:"
-	echo "Da collection-langitalian:"
-	echo "Da collection-langportuguese:"
-	echo "Da collection-langspanish:"
+# Instalando pacotes
+if [ ! -L /usr/local/bin/pdftex ]; then
 	tlmgr install \
 		amsfonts bibtex cm colorprofiles etex graphics-def hyphenex ifplatform iftex knuth-lib pdftex plain tex-ini-files texlive-common texlive-en texlive-msg-translations tlshell unicode-data \
 		amsmath babel babel-english babelbib carlisle epstopdf-pkg etoolbox fancyhdr firstaid fix2col geometry graphics hyperref l3backend l3kernel l3packages latex latex-bin latex-fonts natbib oberdiek tools url \
@@ -98,12 +92,11 @@ EOF
 		babel-latin babel-french babel-german babel-italian babel-portuges babel-spanish \
 		hyphen-english hyphen-latin hyphen-french hyphen-german hyphen-italian hyphen-portuguese hyphen-spanish \
 		tabularray-abnt
-	echo "TeXLive $TL instalado."
-else echo "TeXLive $TL já instalado.";
+	tlmgr path add
 fi
 
-#	Habilita alguns comandos externos extras
-cat >> /opt/texlive/$TL/texmf.cnf << EOF
+# Lista de comandos externos habilitados
+cat << EOF >> /usr/local/texlive/$VERSION/texmf.cnf
 %
 % Acrescenta pdftex, pdflatex, biber e gnuplot à lista
 shell_escape_commands = \\
@@ -124,10 +117,3 @@ r-mpost,\\
 texosquery-jre8
 EOF
 
-#	Remove código ARM64 dos binários universais
-find /opt/texlive/$TL/bin/universal-darwin -type f | while read bin; do
-	arch=`lipo -archs $bin`
-	if echo "$arch" | grep -q "arm64"; then
-		lipo -remove arm64 $bin -output $bin
-	fi
-done
