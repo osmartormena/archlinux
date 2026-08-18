@@ -126,42 +126,6 @@ cp archroot.sh /mnt/root/
 #arch-chroot -S /mnt
 ```
 
-### Bootloader
-
-Vamos usar o `systemd-boot` como _bootloader_. Execute
-```
-# bootctl install
-```
-Isso deve ajustar as variáveis na NVRAM e copiar aluns arquivos para a partição ESP (`/dev/sda1`) montada em `/efi`, para a partição BOOT (`/dev/sda2`) montada em `/boot`.
-
-Crie o arquivo `/etc/kernel/cmdline` contendo `root=UUID=<UUID> rootflags=subvol=@,noatime,compress=zstd rw loglevel=3`. Substitua <UUID> pela UUID da partição raiz, contida em `/etc/fstab`.
-
-Criando o arquivo `/etc/kernel/install.conf`
-```
-# echo 'layout=uki' > /etc/kernel/install.conf
-```
-é suficiente para que o `systemd-boot` utilize uma UKI (_Unified Kernel Image_) para fazer o _boot_.
-
-Executando
-```
-# kernel-install add-all
-```
-cria uma UKI para cada _kernel_ disponível em `/usr/lib/modules` e instala sob `/boot/EFI/Linux`. A UKI pode ser inspecionada por:
-```
-# ukify inspect /boot/EFI/Linux/*.efi
-```
-
-Finalmente, crie o arquivo `/boot/loader/loader.conf`, contendo:
-```
-default @saved
-timeout 0
-editor no
-```
-e cheque se sua opção de _boot_ aparece para o __systemd-boot__:
-```
-# bootctl list
-```
-
 ### Senha de 'root'
 
 Vamos agora criar uma senha do usuário __root__ neste sistema (não se esqueça desta senha):
