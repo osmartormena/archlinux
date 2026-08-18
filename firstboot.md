@@ -136,7 +136,14 @@ Checando que a nova conta de usuário pertence ao grupo `wheel`:
 # id tormena
 ```
 
-Copie `~/.bash_profile` e `~/.bashrc` para `/home/tormena`. Assim, terá o mesmo ambiente e atalhos quando logar com seu usuário. Execute
+Copie `~/.bash_profile` e `~/.bashrc` para `/home/tormena`.
+```
+# cp /root/.bash_profile /home/tormena/
+# cp /root/.bashrc /home/tormena/
+```
+Assim, terá o mesmo ambiente e atalhos quando logar com seu usuário.
+
+Execute
 ```
 # exit
 ```
@@ -145,9 +152,13 @@ para encerrar a sua sessão e inicie uma nova, com seu novo usuário e senha. Pe
 $
 ```
 
-## Set up a GUI
+## Instalar uma interface gráfica
 
-It’s hard to consider a system useful without a web browser. Even though there are a choice number of good text-based web browsers, there’s such a high dependency on JavaScript that a graphical browser is, de facto, a must. So, here we go:
+Difícil considerar um computador útil sem um _web browser_. Até poucos anos atrás, era possível fazer muito com _browsers_ textuais (como `elinks` ou `w3m`). Infelizmente, a infraestrutura da _web_ usa e abusa de conteúdo dinâmico em JavaScprit® e hoje, esses navegadores não conseguem sequer fazer uma simples pesquisa no <google.com>.
+
+Por esta razão, vamos instalar uma interface gráfica: para ter um _web browser_! Porém, nosso sistema não faz _boot_ direto nela. Ela será acionada conforme a necessidade apenas.
+
+Vamos precisar instalar alguns novos pacotes. Retornando à conta __root__, execute:
 ```
 pacman -S xorg-server xorg-xinit xorg-xrandr libxft libxinerama ttf-terminus-nerd
 
