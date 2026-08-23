@@ -106,7 +106,6 @@ Ao reinstalar o sistema, para evitar que minha NVRAM fique cheia de variáveis e
 * Você __deve__ instalar um editor de texto: `nano` é uma boa opção; eu uso `neovim` pois minhas ferramentas de produtividade estão ligadas a ele.
 * É sempre recomendável instalar um _firewall_: `ufw` é descomplicado até no nome.
 * Ferramentas de desenvolvimento e acesso ao <github.com>: `base-devel`, `gcc-fortran`, `git`, `github-cli` e `openssh`.
-* A instalação de um _bootloader_ descrita mais adiante depende do pacote `systemd-ukify`.
 * A família de fonte Terminus é excelente para suporte diacrítico e legibilidade. Instale o pacote `terminus-font`.
 * Considero imprescindível ter a documentação local de todos o sistema: os pacotes `man-db` e `man-pages` dão acesso à documentação de cada comando e arquivo de configuração aqui referenciado.
 * O pacote `gnuplot` é utilizado em meu fluxo de trabalho com o TeX Live.
