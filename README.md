@@ -1,8 +1,9 @@
 # Instalação do ArchLinux em um MacBook Pro 13" (Early 2015)
 
-Faça o _boot_ com a live ISO do ArchLinux.
+## Sumário
+- [_Boot_ da live ISO do ArchLinux](_Boot_ da live ISO do ArchLinux)
 
-## Ajustando o layout do teclado e fonte do console
+## _Boot_ da live ISO do ArchLinux
 
 Para o _layout_ de teclado operar naturalmente com acentos, til e cedilha, é necessário configurar o `loadkeys` adequadamente. Também é necessário usar uma fonte que suporte os acentos. Devido à alta resolução do Retina Display (227 dpi), vou usar uma fonte da família Terminus.
 
@@ -11,7 +12,7 @@ Para o _layout_ de teclado operar naturalmente com acentos, til e cedilha, é ne
 # setfont ter-132b
 ```
 
-## Conecte-se à Internet
+### Conecte-se à Internet
 
 Para garantir o funcionamento do WiFi nas bandas de 5 GHz é necessário respeitar a canalização e os limites de potência nacionais. O pacote `wireless-regdb` provê essas informações. Executando
 ```
@@ -30,7 +31,7 @@ iwctl station wlan0 get-networks
 ```
 deve resultar em uma lista de redes (SSID) sem fio ao alcance.
 
-### Para redes abertas
+#### Para redes abertas
 
 Para se conectar a uma rede aberta, basta executar
 ```
@@ -38,7 +39,7 @@ iwctl station wlan0 connect SSID
 ```
 Um arquivo `/var/lib/iwd/SSID.open` é criado com a configuração desta rede.
 
-### Para redes WPA-Personal
+#### Para redes WPA-Personal
 
 Para se conectar, execute:
 ```
@@ -46,7 +47,7 @@ iwctl --passphrase=PASSPHRASE station wlan0 connect SSID
 ```
 Um arquivo `/var/lib/iwd/SSID.psk` é criado com a configuração desta rede.
 
-### Para redes empresariais (WPA-Enterprise)
+#### Para redes empresariais (WPA-Enterprise)
 
 Agora, infelizmente, o utilitário `iwctl` sozinho não é capaz de autenticar a conexão. É necessário provisionar manualmente um arquivo `/var/lib/iwd/SSID.8021x`. Execute `vim /var/lib/iwd/SSID.8021x` e preencha com o seguinte conteúdo:
 ```
@@ -63,7 +64,7 @@ iwctl station wlan0 connect SSID
 ```
 para se conectar à rede.
 
-### Testando a conectividade
+#### Testando a conectividade
 
 ```
 ping -c 3 google.com
@@ -104,3 +105,5 @@ efibootmgr -b 0001 -B
 * Considero imprescindível ter a documentação local de todos o sistema: os pacotes `man-db` e `man-pages` dão acesso à documentação de cada comando e arquivo de configuração aqui referenciado.
 * O pacote `gnuplot` é utilizado em meu fluxo de trabalho com o TeX Live.
 * Finalmente, algumas ferramentas de conveniência: `tmux` é muito útil para trabalhar no console; `bash-completion` ajuda a evitar a síndrome de tunel do carpo.
+
+## Primeiro _boot_
