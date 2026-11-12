@@ -90,6 +90,37 @@ efibootmgr -b 0001 -B
 
 ### Executando o script automático de instalação
 
+Vamos atualizar o `archinstall` e executá-lo:
+```
+pacman -S archinstall
+archinstall
+```
+Uma interface textual será aberta. Vamos ajustar as opções uma-a-uma.
+- __Archinstall language:__ `English`
+- __Locales__
+  - __Keyboard layout:__ `br-latin-us`
+  - __Locale language:__ `en_US.UTF-8`
+  - __Locale encoding:__ `UTF-8`
+  - __Console font:__ `ter-132b`
+- __Mirrors and repositories__: _não altere_
+- __Disk configuration > Partitioning > Use a best effort default partition layout:__ _Selecione seu dispositivo_
+  - __Select main filesystem:__ `btrfs`
+    - __Would you like to use BTRFS subvolumes with a default structure?__ `Yes`
+    - __Would you like to use compression or disable CoW?__ `Use compression`
+  - __LVM:__ _não altere_
+  - __Disk encryption:__ _não altere_
+  - __Btrfs snapshots:__ _não altere_
+- __Swap:__ _não altere_
+- __Bootloader:__ _não altere_
+- __Kernels:__ _não altere_
+- __Additional firmware:__ _não altere_
+- __Hostname:__ _defina conforme conveniente_
+- __Authentication__
+  - __Root password:__ _defina sua senha de root_
+  - __User account:__ _não defina um usuário aqui_
+  - __U2F login setup:__ _não altere_
+
+
 * Segundo a documentação oficial, são absolutamente imprescindíveis: o _kernel_ `linux`; _firmware_ `linux-firmware`; e uma coleção básica de pacotes `base`.
 * É altamente recomendável instalar atualizações de micro-código da CPU: ou `intel-ucode` ou `amd-ucode`, dependendo da sua CPU.
 * Caso seu computador não possua uma porta Ethernet, sua conexão sem fio também deve estar funcional já a partir da instalação: recomendo instalar `iwd` e `wireless-regdb`.
