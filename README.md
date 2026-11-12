@@ -1,7 +1,7 @@
 # Instalação do ArchLinux em um MacBook Pro 13" (Early 2015)
 
 ## Sumário
-- [_Boot_ da live ISO do ArchLinux](_Boot_ da live ISO do ArchLinux)
+- [_Boot_ da live ISO do ArchLinux](#_Boot_ da live ISO do ArchLinux)
 
 ## _Boot_ da live ISO do ArchLinux
 
