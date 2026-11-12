@@ -111,7 +111,11 @@ Uma interface textual será aberta. Vamos ajustar as opções uma-a-uma.
   - __Disk encryption:__ _não altere_
   - __Btrfs snapshots:__ _não altere_
 - __Swap:__ _não altere_
-- __Bootloader:__ _não altere_
+- __Bootloader__
+  - __Bootloader:__ `Systemd-boot`
+  - __Unified kernel images:__ `Yes`
+  - __Plymouth:__ _Confirme a mensagem de aviso (`Yes`)_
+    - __Select Plymouth theme:__ `bgrt`
 - __Kernels:__ _não altere_
 - __Additional firmware:__ _não altere_
 - __Hostname:__ _defina conforme conveniente_
@@ -119,7 +123,10 @@ Uma interface textual será aberta. Vamos ajustar as opções uma-a-uma.
   - __Root password:__ _defina sua senha de root_
   - __User account:__ _não defina um usuário aqui_
   - __U2F login setup:__ _não altere_
-
+- __Profile__
+  - __Type:__ `Xorg`
+  - __Graphics driver:__ `Intel (open source)`
+- __Applications__
 
 * Segundo a documentação oficial, são absolutamente imprescindíveis: o _kernel_ `linux`; _firmware_ `linux-firmware`; e uma coleção básica de pacotes `base`.
 * É altamente recomendável instalar atualizações de micro-código da CPU: ou `intel-ucode` ou `amd-ucode`, dependendo da sua CPU.
