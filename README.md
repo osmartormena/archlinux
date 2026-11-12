@@ -1,8 +1,5 @@
 # Instalação do ArchLinux em um MacBook Pro 13" (Early 2015)
 
-## Sumário
-- [_Boot_ da live ISO do ArchLinux](#_Boot_ da live ISO do ArchLinux)
-
 ## _Boot_ da live ISO do ArchLinux
 
 Para o _layout_ de teclado operar naturalmente com acentos, til e cedilha, é necessário configurar o `loadkeys` adequadamente. Também é necessário usar uma fonte que suporte os acentos. Devido à alta resolução do Retina Display (227 dpi), vou usar uma fonte da família Terminus.
