@@ -137,8 +137,10 @@ Uma interface textual será aberta. Vamos ajustar as opções uma-a-uma.
 - __Pacman:__ _não altere_
 - __Additional packages__
   - A
+
 [!Note]
 Pacotes `base`, `linux`, `linux-firmware`, e adicionais de __Profile__ e __Applications__ já são instalados.
+
 - __Timezone:__ `America/Sao_Paulo`
 - __Automatic time sync (NTP):__ _não altere_
 - __Install__
