@@ -198,4 +198,23 @@ alias la='ls -A'
 EOF
 
 source ~/.bashrc
+
+mkdir -p ~/.config/nvim
+cat << EOF > ~/.config/nvim/init.lua
+-- Ajustes de serviços desabilitados
+vim.g.loaded_node_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_python3_provider = 0
+vim.g.loaded_ruby_provider = 0
+
+-- Ajustes de usabilidade e legibilidade
+vim.opt.number = true
+vim.api.nvim_set_hl(0, "LineNr", { ctermfg = 7 })
+vim.opt.tabstop = 2
+vim.opt.shiftwidth = 2
+EOF
+
+cat << EOF > ~/.tmux.conf
+set-option -g focus-events on
+EOF
 ```
