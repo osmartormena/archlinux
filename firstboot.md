@@ -1,11 +1,3 @@
-# Vamos criar um abiente útil de trabalho
-
-Agora que seu sistema fez _boot_ com sua nova instalação de ArchLinux, precisamos realizar alguns últimos passos antes que possa aproveitá-lo, de fato, como ferramenta de produtividade.
-
-A menos que expressamente dito o contrário, todos os comandos são executados como usuário __root__. Uma conta de usuário humano ainda será criada.
-
-Após o _boot_ você será recpecionado com um _prompt_ de login: o usuário é `root` e a senha é a senha registrada com o comando `passwd` ao final da instalação.
-
 ## Atalhos e variáveis de ambiente
 
 Pessoalmente, tem alguns atalhos e variáveis de ambiente que ajudam muito na utilização do Linux Console (a presente interface de linha de comando que você está usando). Usando seu editor de texto, crie `~/.bash_profile`, contendo
@@ -117,8 +109,6 @@ Por esta razão, vamos instalar uma interface gráfica: para ter um _web browser
 
 Vamos precisar instalar alguns novos pacotes. Retornando à conta __root__, execute:
 ```
-pacman -S xorg-server xorg-xinit xorg-xrandr libxft libxinerama ttf-terminus-nerd
-
 mkdir -p ~/.config/fontconfig
 cat << 'EOF' > ~/.config/fontconfig/fonts.conf
 <?xml version="1.0"?>
