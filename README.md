@@ -136,25 +136,16 @@ Uma interface textual será aberta. Vamos ajustar as opções uma-a-uma.
 - __Network configuration:__ `Use standalone iwd`
 - __Pacman:__ _não altere_
 - __Additional packages__
-  - A
+  - `base-devel`,`bash-completion`,  `btrfs-progs`, `dosfstools`, `git`, `github-cli`, `man-db`, `man-pages`, `neovim`, `openssh`, `terminus-font`, `tmux` e `wireless-regdb`
 
 > [!Note]
-> Pacotes `base`, `linux`, `linux-firmware`, e adicionais de __Profile__ e __Applications__ já são instalados.
+> Pacotes `base`, `linux`, `linux-firmware`, `efibootmgr`, `intel-ucode`, e adicionais de __Profile__ e __Applications__ já são instalados.
 
 - __Timezone:__ `America/Sao_Paulo`
 - __Automatic time sync (NTP):__ _não altere_
-- __Install__
+- __Install:__ _Confirme com `Yes`_
 
-* Segundo a documentação oficial, são absolutamente imprescindíveis: o _kernel_ `linux`; _firmware_ `linux-firmware`; e uma coleção básica de pacotes `base`.
-* É altamente recomendável instalar atualizações de micro-código da CPU: ou `intel-ucode` ou `amd-ucode`, dependendo da sua CPU.
-* Caso seu computador não possua uma porta Ethernet, sua conexão sem fio também deve estar funcional já a partir da instalação: recomendo instalar `iwd` e `wireless-regdb`.
-* Com base em nosso sistema de arquivos, instale: `efibootmgr`, `dosfstools` e `btrfs-progs`.
-* Você __deve__ instalar um editor de texto: `nano` é uma boa opção; eu uso `neovim` pois minhas ferramentas de produtividade estão ligadas a ele.
-* É sempre recomendável instalar um _firewall_: `ufw` é descomplicado até no nome.
-* Ferramentas de desenvolvimento e acesso ao <github.com>: `base-devel`, `gcc-fortran`, `git`, `github-cli` e `openssh`.
-* A família de fonte Terminus é excelente para suporte diacrítico e legibilidade. Instale o pacote `terminus-font`.
-* Considero imprescindível ter a documentação local de todos o sistema: os pacotes `man-db` e `man-pages` dão acesso à documentação de cada comando e arquivo de configuração aqui referenciado.
-* O pacote `gnuplot` é utilizado em meu fluxo de trabalho com o TeX Live.
-* Finalmente, algumas ferramentas de conveniência: `tmux` é muito útil para trabalhar no console; `bash-completion` ajuda a evitar a síndrome de tunel do carpo.
+> [!Caution]
+> Isso irá destruir o sistema de arquivos do dispositivo selecionado. Esteja certo desta ação.
 
 ## Primeiro _boot_
