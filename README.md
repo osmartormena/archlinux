@@ -148,4 +148,24 @@ Uma interface textual será aberta. Vamos ajustar as opções uma-a-uma.
 > [!Caution]
 > Isso irá destruir o sistema de arquivos do dispositivo selecionado. Esteja certo desta ação.
 
+  - Após a instalação, faça o _reboot_ e remova a mídia de instalação.
+
 ## Primeiro _boot_
+
+Vamos fazer login na conta _root_ recém criada. Agora vamos configurar o `iwd` para reestabelecer a conexão com a Internet.
+```
+mkdir /etc/iwd
+
+cat << EOF > /etc/iwd/main.conf
+[General]
+EnableNetworkConfiguration=true
+Country=BR
+EOF
+
+systemctl enable --now iwd.service
+systemctl enable --now systemd-resolved.service
+```
+Repita os passos em 
+```
+ping -c 3 google.com
+```
