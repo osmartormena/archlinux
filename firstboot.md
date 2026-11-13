@@ -1,26 +1,3 @@
-## Otimização do systemd
-
-Por _default_, o systemd inicia o sistema para uma interface gráfica. Nós ainda nem instalamos um ambiente gráfico e, neste tutorial, o sistema sempre irá fazer _boot_ para o console. Para substituir esse comportamento padrão, execute:
-```
-# systemctl set-default multi-user.target
-# systemctl isolate multi-user.target
-```
-
-## Ajustes de permissão administrativa
-
-Execute `visudo` e remova o comentário (`#`) da linha `%wheel ALL=(ALL:ALL) ALL`. Isso permite que usuários do grupo `wheel` possam executar comandos com privilégios elevados (da conta __root__) através do comando `sudo` e a senha de usuário.
-
-## Ajustes pessoais
-
-> [!Note]
-> Esta seção contém ajustes específicos para o meu MacBook Pro, devendo ser ignorada.
-
-```
-# echo '650' > /sys/class/backlight/intel_backlight/brightness
-# echo '64' > /sys/class/leds/smc\:\:kbd_backlight/brightness
-# rfkill block bluetooth
-```
-
 ## Criando uma conta de usuário (humano)
 
 Nós vamos usar o `systemd-homed` para criar um volume encriptado sob `/home`. Ao meu ver, essa abordagem possui vantagens sobre a encriptação total de disco. Desta forma, apenas os arquivos pessoais são encriptados e o desbloqueio do volume ocorre no ato de login, ao invés do _boot_.
@@ -64,61 +41,7 @@ Copie `~/.bash_profile` e `~/.bashrc` para `/home/tormena`.
 ```
 Assim, terá o mesmo ambiente e atalhos quando logar com seu usuário.
 
-Execute
-```
-# exit
-```
-para encerrar a sua sessão e inicie uma nova, com seu novo usuário e senha. Perceba que seu _prompt_ agora termina em
-```
-$
-```
-
 ## Instalar uma interface gráfica
-
-Difícil considerar um computador útil sem um _web browser_. Até poucos anos atrás, era possível fazer muito com _browsers_ textuais (como `elinks` ou `w3m`). Infelizmente, a infraestrutura da _web_ usa e abusa de conteúdo dinâmico em JavaScprit® e hoje, esses navegadores não conseguem sequer fazer uma simples pesquisa no <google.com>.
-
-Por esta razão, vamos instalar uma interface gráfica: para ter um _web browser_! Porém, nosso sistema não faz _boot_ direto nela. Ela será acionada conforme a necessidade apenas.
-
-Vamos precisar instalar alguns novos pacotes. Retornando à conta __root__, execute:
-```
-mkdir -p ~/.config/fontconfig
-cat << 'EOF' > ~/.config/fontconfig/fonts.conf
-<?xml version="1.0"?>
-<!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
-
-<fontconfig>
-
-    <!-- General rendering -->
-    <match target="font">
-        <edit name="antialias" mode="assign">
-            <bool>true</bool>
-        </edit>
-
-        <!-- Preserve the font's proportions while still getting
-             some pixel-grid alignment. -->
-        <edit name="hinting" mode="assign">
-            <bool>true</bool>
-        </edit>
-
-        <edit name="hintstyle" mode="assign">
-            <const>hintslight</const>
-        </edit>
-
-        <!-- Use the TrueType instructions rather than forcing
-             FreeType's autohinter. -->
-        <edit name="autohint" mode="assign">
-            <bool>false</bool>
-        </edit>
-
-        <!-- Grayscale rather than colored LCD fringes. -->
-        <edit name="rgba" mode="assign">
-            <const>none</const>
-        </edit>
-    </match>
-
-</fontconfig>
-EOF
-```
 
 Para que o teclado com acentos também funcione na GUI
 ```
