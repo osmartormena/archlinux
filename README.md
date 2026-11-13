@@ -165,7 +165,7 @@ EOF
 systemctl enable --now iwd.service
 systemctl enable --now systemd-resolved.service
 ```
-Repita os passos em 
+Repita os passos em [Para redes empresariais (WPA-Enterprise)](#para-redes-empresariais-(wpa-enterprise))
 ```
 ping -c 3 google.com
 ```
