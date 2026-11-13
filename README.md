@@ -218,3 +218,21 @@ cat << EOF > ~/.tmux.conf
 set-option -g focus-events on
 EOF
 ```
+
+### Ajustes do systemd
+
+```
+systemctl set-default multi-user.target
+systemctl isolate multi-user.target
+```
+
+### Ajuste de _sudoers_ para grupo _wheel_
+
+Execute `visudo` e remova o comentário (`#`) da linha `%wheel ALL=(ALL:ALL) ALL`. Isso permite que usuários do grupo `wheel` possam executar comandos com privilégios elevados (da conta _root_) através do comando `sudo` e a senha de usuário.
+
+### Ajustes de hardware
+
+```
+echo '650' > /sys/class/backlight/intel_backlight/brightness
+echo '64' > /sys/class/leds/smc\:\:kbd_backlight/brightness
+```
