@@ -236,3 +236,11 @@ Execute `visudo` e remova o comentário (`#`) da linha `%wheel ALL=(ALL:ALL) ALL
 echo '650' > /sys/class/backlight/intel_backlight/brightness
 echo '64' > /sys/class/leds/smc\:\:kbd_backlight/brightness
 ```
+
+## Crie uma conta de usuário humano
+
+A
+
+## Instalando uma interface gráfica
+
+A
