@@ -238,14 +238,3 @@ EOF
 ```
 
 Agora, basta executar `startx` para abrir a GUI.
-
-## Install some basic utilities
-
-Now we’ll try and get the system useful for productivity work: coding, LaTeX authoring, e-mail, web browsing, and assorted minor utilities. All just for the TTY.
-
-### Web browser
-
-Having a web browser is great for basic usage:
-```
-pacman -S firefox firefox-dark-reader
-```
