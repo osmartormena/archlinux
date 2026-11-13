@@ -42,49 +42,6 @@ Por _default_, o systemd inicia o sistema para uma interface gráfica. Nós aind
 # systemctl isolate multi-user.target
 ```
 
-## Conecte-se à Internet e ajuste o gerenciador de pacotes
-
-Caso esteja usando uma rede cabeada, ela já deve estar operando. Caso esteja utilizando uma rede sem fio, precisamos fazer alguns últimos ajustes para configurar o `iwd`:
-```
-# mkdir /etc/iwd
-```
-e crie o arquivo `/etc/iwd/main.conf`, contendo:
-```
-[General]
-EnableNetworkConfiguration=true
-Country=BR
-```
-
-Agora, vamos iniciar os seriços de autenticação de rede sem fio, DHCP (`iwd.service`) e DNS (`systemd-resolved.service`):
-```
-# systemctl enable --now iwd.service
-# systemctl enable --now systemd-resolved.service
-```
-
-Aproveitamos e iniciamos o _firewall_:
-```
-# ufw enable
-# ufw logging off
-# ufw status verbose
-# systemctl enable --now ufw.service
-```
-
-Porque nós copiamos o arquivo de configuração de rede, sua conexção sem fio já deve estar funcionando. Cheque executando:
-```
-# ping -c 3 google.com
-```
-
-Confirmando que a conexão à Internet está funcionando, vamos nos certificar que o relógio do sistema está sincronizado:
-```
-timedatectl set-ntp true
-```
-
-Vamos habilitar a saída colorida do gerenciador de pacotes `pacman` e atualizar seu banco de dados (e, possivelmente, também atualizar algum pacote já instalado):
-```
-# sed -i 's/^#Color$/Color/' /etc/pacman.conf
-# pacman -Suy
-```
-
 ## Ajustes de permissão administrativa
 
 Execute `visudo` e remova o comentário (`#`) da linha `%wheel ALL=(ALL:ALL) ALL`. Isso permite que usuários do grupo `wheel` possam executar comandos com privilégios elevados (da conta __root__) através do comando `sudo` e a senha de usuário.
