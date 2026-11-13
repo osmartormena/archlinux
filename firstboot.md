@@ -1,31 +1,3 @@
-## Atalhos e variáveis de ambiente
-
-Pessoalmente, tem alguns atalhos e variáveis de ambiente que ajudam muito na utilização do Linux Console (a presente interface de linha de comando que você está usando). Usando seu editor de texto, crie `~/.bash_profile`, contendo
-```
-# ~/.bash_profile
-
-# Se existir, carregue ~/.bashrc
-if [ -f ~/.bashrc ]; then
-  source ~/.bashrc
-fi
-```
-e também crie `~/.bashrc`, contendo
-```
-# ~/.bashrc
-
-# Variáveis de ambiente
-export EDITOR='/bin/nvim'
-
-# Atalhos (aliases) úteis
-alias ls='ls --color=always'
-alias ll='ls -hl'
-alias la='ls -A'
-```
-
-Meu editor de texto é o Neovim (`nvim`), você talvez use o `nano` ou outro. Ajuste de acordo. Os atalhos garantem que o comando `ls` colore os diferentes tipos de arquivos e diretórios. O atalho `ll` retorna uma lista de arquivos e diretórios, com tamanho legível para humanos (ao invés da contagem de blocos, que é o padrão POSIX). O atalho `la` lista todos os arquivos, incluindo itens ocultos (cujo nome começa com `.`).
-
-Para ativar essas mudanças na sessão atual, execute `source ~/.bashrc`. Nos próximos logins, isso já ocorrerá automaticamente.
-
 ## Otimização do systemd
 
 Por _default_, o systemd inicia o sistema para uma interface gráfica. Nós ainda nem instalamos um ambiente gráfico e, neste tutorial, o sistema sempre irá fazer _boot_ para o console. Para substituir esse comportamento padrão, execute:
