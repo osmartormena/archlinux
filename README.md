@@ -152,6 +152,8 @@ Uma interface textual será aberta. Vamos ajustar as opções uma-a-uma.
 
 ## Primeiro _boot_
 
+### Reconectando o WiFi
+
 Vamos fazer login na conta _root_ recém criada. Agora vamos configurar o `iwd` para reestabelecer a conexão com a Internet.
 ```
 mkdir /etc/iwd
@@ -170,4 +172,30 @@ Repita os passos em [Para redes abertas](#para-redes-abertas), [Para redes WPA-P
 ping -c 3 google.com
 ```
 
-A
+### Ajustes de ambiente
+
+Vamos ajustar algumas particularidades da conta _root_ para melhor gerenciar a instalação.
+```
+cat << EOF > ~/.bash_profile
+# ~/.bash_profile
+
+# Se existir, carregue ~/.bashrc
+if [ -f ~/.bashrc ]; then
+  source ~/.bashrc
+fi
+EOF
+
+cat << EOF > ~/.bashrc
+# ~/.bashrc
+
+# Variáveis de ambiente
+export EDITOR='/bin/nvim'
+
+# Atalhos (aliases) úteis
+alias ls='ls --color=always'
+alias ll='ls -hl'
+alias la='ls -A'
+EOF
+
+source ~/.bashrc
+```
