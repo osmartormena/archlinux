@@ -127,6 +127,18 @@ Uma interface textual será aberta. Vamos ajustar as opções uma-a-uma.
   - __Type:__ `Xorg`
   - __Graphics driver:__ `Intel (open source)`
 - __Applications__
+  - __Bluetooth:__ `Yes`
+  - __Audio:__ `pipewire`
+  - __Print service:__ `Yes`
+  - __Power management:__ `power-profiles-daemon`
+  - __Firewall:__ `ufw`
+  - __Additional fonts:__ _selecione todas_
+- __Network configuration:__ `Use standalone iwd`
+- __Pacman:__ _não altere_
+- __Additional packages__
+- __Timezone:__ `America/Sao_Paulo`
+- __Automatic time sync (NTP):__ _não altere_
+- __Install__
 
 * Segundo a documentação oficial, são absolutamente imprescindíveis: o _kernel_ `linux`; _firmware_ `linux-firmware`; e uma coleção básica de pacotes `base`.
 * É altamente recomendável instalar atualizações de micro-código da CPU: ou `intel-ucode` ou `amd-ucode`, dependendo da sua CPU.
