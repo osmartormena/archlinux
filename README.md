@@ -165,7 +165,9 @@ EOF
 systemctl enable --now iwd.service
 systemctl enable --now systemd-resolved.service
 ```
-Repita os passos em [Para redes empresariais (WPA-Enterprise)](#para-redes-empresariais-wpa-enterprise)
+Repita os passos em [Para redes abertas](#para-redes-abertas), [Para redes WPA-Personal](#para-redes-wpa-personal), ou [Para redes empresariais (WPA-Enterprise)](#para-redes-empresariais-wpa-enterprise) para conectar à algum SSID e então teste:
 ```
 ping -c 3 google.com
 ```
+
+A
