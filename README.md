@@ -239,7 +239,37 @@ echo '64' > /sys/class/leds/smc\:\:kbd_backlight/brightness
 
 ## Crie uma conta de usuário humano
 
-A
+Nós vamos usar o `systemd-homed` para criar um volume encriptado sob `/home`. Ao meu ver, essa abordagem possui vantagens sobre a encriptação total de disco. Desta forma, apenas os arquivos pessoais são encriptados e o desbloqueio do volume ocorre no ato de login, ao invés do _boot_.
+
+Edite o arquivo `/etc/systemd/homed.conf`, de forma que contenha:
+```
+[Home]
+DefaultStorage=luks
+DefaultFileSystemType=btrfs
+```
+
+Também precisamos habilitar o serviço:
+```
+systemctl enable --now systemd-homed.service
+```
+
+Execute:
+```
+homectl create tormena \
+  --real-name="Osmar Tormena Júnior" \
+  --email-address=tormena@utfpr.edu.br \
+  --location="Campo Mourão, PR, BR" \
+  --birth-date=1986-03-06 \
+  --member-of=wheel \
+  --disk-size=20G \
+  --luks-extra-mount-options="compress=zstd:3,noatime"
+homectl activate tormena
+```
+
+Checando se a nova conta de usuário pertence ao grupo `wheel`:
+```
+id tormena
+```
 
 ## Instalando uma interface gráfica
 
