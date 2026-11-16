@@ -321,8 +321,7 @@ EOF
 chmod +x ~/.xinitrc
 
 cat << EOF > ~/.Xresources
-! Use 192 para 2x
-Xft.dpi: 220
+Xft.dpi: 192
 
 Xft.antialias: 1
 Xft.hinting: 1
