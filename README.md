@@ -275,6 +275,8 @@ id tormena
 
 ### Suckless.org
 
+Ainda como usuário _root_:
+
 ```
 mkdir ~/suckless
 cd suckless
@@ -282,14 +284,14 @@ git clone git://git.suckless.org/dwm
 git clone git://git.suckless.org/dmenu
 git clone git://git.suckless.org/slstatus
 cd dwm
-sed -e 's/monospace:size=10/Terminus:pixelsize=32/g' \
+sed -e 's/monospace:size=10/Terminus:pixelsize=32:bold/g' \
     -e 's/{ "1", "2", "3", "4", "5", "6", "7", "8", "9" }/{ "1", "2", "3" }/' \
     config.def.h > config.h
 make clean install
 make clean
 cd ..
 cd dmenu
-sed 's/monospace:size=10/Terminus:pixelsize=32/' config.def.h > config.h
+sed 's/monospace:size=10/Terminus:pixelsize=32:bold/' config.def.h > config.h
 make clean install
 make clean
 cd ..
@@ -299,4 +301,37 @@ make clean install
 make clean
 cd ..
 cd ..
+```
+
+### Configurando X11-Xorg
+
+Agora, como usuário humano:
+```
+localectl --no-convert set-x11-keymap us "" intl
+
+cat << EOF > ~/.xinitrc
+#!/bin/sh
+
+xrdb -merge ~/.Xresources
+
+slstatus &
+exec dwm
+EOF
+
+chmod +x ~/.xinitrc
+
+cat << EOF > ~/.Xresources
+! DPI: 220 is the true value; use 192 for a clean 2x
+Xft.dpi: 220
+
+Xft.antialias: 1
+Xft.hinting: 1
+Xft.hintstyle: hintslight
+Xft.rgba: none
+Xft.autohint: 0
+Xft.lcdfilter: lcddefault
+
+! HiDPI cursor (default is tiny)
+Xcursor.size: 48
+EOF
 ```
