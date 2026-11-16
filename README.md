@@ -321,7 +321,7 @@ EOF
 chmod +x ~/.xinitrc
 
 cat << EOF > ~/.Xresources
-! DPI: 220 is the true value; use 192 for a clean 2x
+! Use 192 para 2x
 Xft.dpi: 220
 
 Xft.antialias: 1
@@ -331,7 +331,6 @@ Xft.rgba: none
 Xft.autohint: 0
 Xft.lcdfilter: lcddefault
 
-! HiDPI cursor (default is tiny)
 Xcursor.size: 48
 EOF
 ```
