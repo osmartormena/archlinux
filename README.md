@@ -273,4 +273,30 @@ id tormena
 
 ## Instalando uma interface gráfica
 
-A
+### Suckless.org
+
+```
+mkdir ~/suckless
+cd suckless
+git clone git://git.suckless.org/dwm
+git clone git://git.suckless.org/dmenu
+git clone git://git.suckless.org/slstatus
+cd dwm
+sed -e 's/monospace:size=10/Terminus:pixelsize=32/g' \
+    -e 's/{ "1", "2", "3", "4", "5", "6", "7", "8", "9" }/{ "1", "2", "3" }/' \
+    config.def.h > config.h
+make clean install
+make clean
+cd ..
+cd dmenu
+sed 's/monospace:size=10/Terminus:pixelsize=32/' config.def.h > config.h
+make clean install
+make clean
+cd ..
+cd slstatus
+sed 's/"%F %T"/" %F %H:%M "/' config.def.h > config.h
+make clean install
+make clean
+cd ..
+cd ..
+```
