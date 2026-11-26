@@ -136,7 +136,7 @@ Uma interface textual será aberta. Vamos ajustar as opções uma-a-uma.
 - __Network configuration:__ `Use standalone iwd`
 - __Pacman:__ _não altere_
 - __Additional packages__
-  - `base-devel`,`bash-completion`,  `btrfs-progs`, `dosfstools`, `firefox`, `git`, `github-cli`, `man-db`, `man-pages`, `neovim`, `openssh`, `ripgrep`, `terminus-font`, `tmux`, `wireless-regdb`, `xclip`, `xdg-utils` e `xorg-xrandr`
+  - `base-devel`,`bash-completion`,  `btrfs-progs`, `dosfstools`, `firefox`, `git`, `github-cli`, `man-db`, `man-pages`, `neovim`, `openssh`, `ripgrep`, `terminus-font`, `tesseract-data-por`, `tmux`, `wireless-regdb`, `xclip`, `xdg-utils`, `xorg-xrandr` e `zathura-pdf-mupdf`
 
 > [!Note]
 > Pacotes `base`, `linux`, `linux-firmware`, `efibootmgr`, `intel-ucode`, e adicionais de __Profile__ e __Applications__ já são instalados.
