@@ -79,7 +79,7 @@ EOF
 if [ ! -L /usr/local/bin/pdftex ]; then
 	tlmgr install \
 		amsfonts bibtex cm colorprofiles etex graphics-def hyphenex ifplatform iftex knuth-lib pdftex plain tex-ini-files texlive-common texlive-en texlive-msg-translations tlshell unicode-data \
-		amsmath babel babel-english babelbib carlisle epstopdf-pkg etoolbox fancyhdr firstaid fix2col geometry graphics hyperref l3backend l3kernel l3packages latex latex-bin latex-fonts natbib oberdiek tools url \
+		amsmath babel babel-english babelbib carlisle epstopdf-pkg etoolbox fancyhdr firstaid fix2col geometry graphics hyperref l3kernel l3packages latex latex-bin latex-fonts natbib oberdiek tools url \
 		booktabs cmap everyshi listings mathtools memoir microtype pdflscape pdfpages textcase xcolor xfrac \
 		acro cancel csquotes listingsutf8 multirow pdfx standalone translations xmpincl xpatch \
 		lm \
