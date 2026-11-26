@@ -83,7 +83,7 @@ if [ ! -L /usr/local/bin/pdftex ]; then
 		booktabs cmap everyshi listings mathtools memoir microtype pdflscape pdfpages textcase xcolor xfrac \
 		acro cancel csquotes listingsutf8 multirow pdfx standalone translations xmpincl xpatch \
 		lm \
-		latexmk synctex texdoc\
+		latexmk synctex texdoc \
 		biber biblatex biblatex-abnt \
 		chemformula physconst siunitx \
 		circuitikz pgf pgfplots \
