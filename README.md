@@ -208,8 +208,16 @@ vim.g.loaded_python3_provider = 0
 vim.g.loaded_ruby_provider = 0
 
 -- Ajustes de usabilidade e legibilidade
-vim.opt.number = true
 vim.api.nvim_set_hl(0, "LineNr", { ctermfg = 7 })
+vim.opt.fileencodings = "utf-8"
+vim.opt.history = 10
+vim.opt.ignorecase = true
+vim.opt.linebreak = true
+vim.opt.number = true
+vim.opt.ruler = true
+vim.opt.shada = ""
+vim.opt.showcmd = true
+vim.opt.smartcase = true
 vim.opt.tabstop = 2
 vim.opt.shiftwidth = 2
 EOF
