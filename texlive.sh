@@ -119,31 +119,28 @@ EOF
 
 #	Cria init.lua, ajustando opções e instalando plugins do neovim
 if [ ! -d ~/.config/nvim ]; then
-	mkdir -p ${HOME}/.config/nvim
+	mkdir -p ~/.config/nvim
 fi
-cat > ${HOME}/.config/nvim/init.lua << EOF
--- Opções de edição
-vim.opt.fileencodings	= "utf-8"	-- apenas para arquivos já existentes
-vim.opt.history				= 10			-- mantenha pequeno histórico
-vim.opt.ignorecase		= true		-- ignore capitalização na busca
-vim.opt.linebreak			= true		-- apenas querbe a linha em alguns caracteres
-vim.opt.number				= true		-- mostre os números de linha
-vim.opt.ruler					= true		-- mostre a linha e coluna sob o cursor
-vim.opt.shada					= ""			-- não guarde histórico de sessão
-vim.opt.shiftwidth		= 2				-- espaço de identação
-vim.opt.showcmd				= true		-- sugestão de completar comandos
-vim.opt.smartcase			= true		-- se a busca for maiúscula, torne-a sensível à capitalização
-vim.opt.tabstop				= 2				-- espaços do tab
+cat << EOF > ~/.config/nvim/init.lua
+-- Ajustes de serviços desabilitados
+vim.g.loaded_node_provider = 0
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_python3_provider = 0
+vim.g.loaded_ruby_provider = 0
 
--- Limpeza do healthcheck()
-vim.g.loaded_python3_provider	= 0	-- desabilita suporte ao Python 3
-vim.g.loaded_ruby_provider		= 0	-- desabilita suporte ao Ruby
-vim.g.loaded_perl_provider		= 0	-- desabilita suporte ao Perl
-vim.g.loaded_node_provider		= 0	-- desabilita suporte ao Node.js
-
--- Ortografia
-vim.opt.spell			= true		-- habilita corretor ortográfico
-vim.opt.spelllang	= "pt_br"	-- português brasileiro
+-- Ajustes de usabilidade e legibilidade
+vim.api.nvim_set_hl(0, "LineNr", { ctermfg = 7 })
+vim.opt.fileencodings = "utf-8"
+vim.opt.history = 10
+vim.opt.ignorecase = true
+vim.opt.linebreak = true
+vim.opt.number = true
+vim.opt.ruler = true
+vim.opt.shada = ""
+vim.opt.showcmd = true
+vim.opt.smartcase = true
+vim.opt.tabstop = 2
+vim.opt.shiftwidth = 2
 
 -- Plugins (vim.pack)
 vim.pack.add({
@@ -158,25 +155,16 @@ nvim --headless -c "lua vim.pack.update(nil, { force = true })" -c "qa"
 nvim --headless -c "helptags ALL" -c "q"
 
 #	Ajusta opções dos plugins
-if test ! -d $HOME/.config/nvim/ftplugin; then
+if [ ! -d ~/.config/nvim/ftplugin ]; then
 	mkdir -p $HOME/.config/nvim/ftplugin
 fi
-cat > $HOME/.config/nvim/ftplugin/tex.vim << EOF
+cat << EOF > ~/.config/nvim/ftplugin/tex.vim
 " reconheça arquivos \".tex\" como LaTeX
 let g:tex_flavor = 'latex'
-
-" ajuste de identação
-setlocal softtabstop=2
 
 " Não abra o menu QuickFix para avisos sem erros
 let g:vimtex_quickfix_open_on_warning = 0
 
 " Use o Skim como o visualizados de PDF do vimtex
-let g:vimtex_view_method = 'skim'
-
-" Retorna o foco para o Nvim após uma busca inversa
-function! s:TexFocusVim() abort
-	silent execute "!open -a Terminal"
-	redraw!
-endfunction
+let g:vimtex_view_method = 'zathura'
 EOF
