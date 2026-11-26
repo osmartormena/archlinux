@@ -5,12 +5,10 @@ set +h
 # Versão
 VERSION=2026
 
-## Ajustando o prefixo
-#sudo chown -R tormena:tormena /usr/local
-#chmod -R g+rwx /usr/local
-
 ## Instalação
-#mkdir /usr/local/texlive
+if [ ! -d /usr/local/texlive ]; then
+	mkdir /usr/local/texlive
+fi
 
 if [ ! -L /usr/local/bin/tlmgr ]; then
 	curl -LO https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
@@ -117,3 +115,4 @@ r-mpost,\\
 texosquery-jre8
 EOF
 
+## Configuração do neovim como IDE TeX
