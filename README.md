@@ -333,3 +333,7 @@ Xft.lcdfilter: lcddefault
 Xcursor.size: 48
 EOF
 ```
+
+## Instalando e configurando o TeX Live
+
+A
