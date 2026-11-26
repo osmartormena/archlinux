@@ -352,5 +352,8 @@ chmod -R g+rwx /usr/local
 
 Vamos baixar o script de instalação, executá-lo e apagá-lo.
 ```
-git
+curl -LO https://raw.githubusercontent.com/osmartormena/archlinux/main/texlive.sh
+chmod +x texlive.sh
+./texlive.sh
+rm texlive.sh
 ```
